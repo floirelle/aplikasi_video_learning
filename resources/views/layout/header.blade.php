@@ -1,11 +1,14 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="display: block; background-color: #285185;">
-        <div class="container-fluid" style="padding: 1%; background-color: #FFC107;">
-            <span class="navbar-brand mb-0 h1" style="padding-left: 10px">Video Learning Laboratory Binus</span>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search Keyword Video" aria-label="Search">
-                <button class="btn btn-warning" type="submit"><i class="fas fa-search"></i></button>
-            </form>
+        <div style="padding: 1%; background-color: #FFC107; display: flex;">
+            <a href="{{ url('learning-video') }}"><img src=" {{ asset('logo.png') }}" alt=""
+                    style="width: 90px; height: 50px; margin-left: 10px"></a>
+            {{-- <form class="d-flex" style="flex: 1; padding: 1%" action="searchvideo" method="GET">
+                <input class="form-control" type="search" name="keyword" placeholder="Search video name..."
+                    aria-label="Search">
+                <button class="btn btn-warning" type="submit" style="margin-left: 5px"><i
+                        class="fas fa-search"></i></button>
+            </form> --}}
         </div>
         <div class="container-fluid" style="padding: 1%">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -17,26 +20,24 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item c-nav-item">
                         <a class="nav-link {{ request()->is('learning-video') ? 'active' : '' }}" aria-current="page"
-                            href="{{ url('learning-video') }}">Learning
+                            href="{{ url('/learning-video') }}">Learning
                             Video</a>
                     </li>
                     <li class="nav-item c-nav-item">
                         <a class="nav-link {{ request()->is('class-video') ? 'active' : '' }}" aria-current="page"
-                            href="{{ url('class-video') }}">Class Video</a>
+                            href="{{ url('/class-video') }}">Class Video</a>
                     </li>
                     <li class="nav-item c-nav-item">
                         <a class="nav-link {{ request()->is('my-playlist') ? 'active' : '' }}" aria-current="page"
-                            href="{{ url('my-playlist') }}">My Playlist Video</a>
+                            href="{{ url('/my-playlist') }}">My Playlist Video</a>
                     </li>
                     <li class="nav-item c-nav-item">
-                        <a class="nav-link {{ request()->is('upload-learning') ? 'active' : '' }}" aria-current="page"
-                            href="{{ url('upload-learning') }}">Upload Learning
-                            Video</a>
+                        <a class="nav-link {{ request()->is('manage-learning-video') ? 'active' : '' }}"
+                            aria-current="page" href="{{ url('/manage-learning-video') }}">Manage Learning Video</a>
                     </li>
                     <li class="nav-item c-nav-item">
-                        <a class="nav-link {{ request()->is('upload-class') ? 'active' : '' }}" aria-current="page"
-                            href="{{ url('upload-class') }}">Upload Class
-                            Video</a>
+                        <a class="nav-link {{ request()->is('manage-class-video') ? 'active' : '' }}"
+                            aria-current="page" href="{{ url('/manage-class-video') }}">Manage Class Video</a>
                     </li>
                 </ul>
                 <form class=" d-flex">

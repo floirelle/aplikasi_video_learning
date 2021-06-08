@@ -1,7 +1,7 @@
 @extends('layout.master')
-@section('title', 'Upload Learning Video')
+@section('title', 'Manage Class Video')
 @section('content')
-    <h1>Upload Learning Video</h1>
+    <h1>Manage Class Video</h1>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus corporis porro et sint debitis necessitatibus
         eaque modi possimus quaerat error, doloremque exercitationem blanditiis odio ex pariatur ratione, nisi repellat
         soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo sapiente necessitatibus a blanditiis

@@ -18,26 +18,30 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('login', function () {
+Route::get('/login', function () {
     return view('login');
 });
 
-Route::get('learning-video', function () {
-    return view('learning-video');
-});
+Route::get('/learning-video', 'CourseController@showLearningVideo');
 
-Route::get('class-video', function () {
+Route::get('/class-video', function () {
     return view('class-video');
 });
 
-Route::get('my-playlist', function () {
+Route::get('/my-playlist', function () {
     return view('my-playlist');
 });
 
-Route::get('upload-learning', function () {
-    return view('upload-learning');
+Route::get('/manage-learning-video', 'CourseController@showManageLearning');
+Route::get('/add-course', function () {
+    return view('add-course');
+});
+Route::get('/manage-class-video', function () {
+    return view('manage-class-video');
 });
 
-Route::get('upload-class', function () {
-    return view('upload-class');
-});
+Route::post('/insert-course', 'CourseController@insertCourse');
+Route::get('/delete-course/{course_code}', 'CourseController@deleteCourse');
+Route::get('/view-course/{course_code}', 'CourseController@showDetailCourse');
+Route::get('/edit-course/{course_code}', 'CourseController@showEditCourse');
+Route::post('/update-course', 'CourseController@updateCourse');

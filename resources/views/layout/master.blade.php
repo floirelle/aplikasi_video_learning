@@ -41,6 +41,24 @@
             font-weight: bold;
         }
 
+        .btn-primary {
+            background-color: #285185 !important;
+            border-color: #285185 !important;
+        }
+
+        .nav-pills>button.active {
+            background-color: #FFC107 !important;
+        }
+
+        .nav-tabs>button.active {
+            background-color: #FFC107 !important;
+            border-color: #FFC107 !important;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
     </style>
 
     <title>@yield('title')</title>
@@ -48,7 +66,7 @@
 
 <body style="background-color: #CCD9E2">
     @include('layout.header')
-    <div style="margin-top: 130px; padding: 1%">
+    <div style="margin-top: 150px; padding: 1%">
         @yield('content')
     </div>
     @include('layout.footer')
