@@ -42,6 +42,9 @@ Route::get('/manage-class-video', function () {
 
 Route::post('/insert-course', 'CourseController@insertCourse');
 Route::get('/delete-course/{course_code}', 'CourseController@deleteCourse');
-Route::get('/view-course/{course_code}', 'CourseController@showDetailCourse');
+Route::get('/view-course/{course_code}', 'CourseController@showDetailCourse')->name('view-course');
 Route::get('/edit-course/{course_code}', 'CourseController@showEditCourse');
 Route::post('/update-course', 'CourseController@updateCourse');
+
+Route::get('/add-video/{session_id}', 'VideoController@showAddVideo');
+Route::post('/insert-video', 'VideoController@insertVideo');

@@ -28,6 +28,10 @@
                                     aria-controls="nav-{{ $loop->index + 1 }}" aria-selected="true">Video
                                     {{ $loop->index + 1 }}</button>
                             @endforeach
+                            <a href="{{ url('/add-video', ['session_id' => $session->session_id]) }}">
+                                <button class="nav-link" type="button"> Add New
+                                    Video</button>
+                            </a>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -36,8 +40,7 @@
                                 id="nav-{{ $loop->index + 1 }}" role="tabpanel"
                                 aria-labelledby="nav-{{ $loop->index + 1 }}-tab">
                                 <div style="margin-top: 1%; color: white">
-                                    <video src="{{ asset('COMP6178/' . $video->video_file) }}" width="65%"
-                                        controls></video>
+                                    <video src="{{ $video->video_file }}" width="65%" controls></video>
                                     <p class="text-uppercase">Topic : </p>
                                     <p class="fs-6 fw-normal"> {{ $video->video_title }}</p>
                                     <p class="text-uppercase">Software used : </p>

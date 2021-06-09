@@ -26,9 +26,9 @@
                         <a href="{{ url('/view-course', ['course_code' => $course->course_code]) }}">
                             <button type="button" class="btn btn-success btn-sm">View</button>
                         </a>
-                        {{-- <a href="{{ url('editcategory', ['idcategory' => $category->id]) }}"> --}}
-                        <button type="button" class="btn btn-info btn-sm">Update</button>
-                        {{-- </a> --}}
+                        <a href="{{ url('edit-course', ['course_code' => $course->course_code]) }}">
+                            <button type="button" class="btn btn-info btn-sm">Update</button>
+                        </a>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                             data-bs-target="#exampleModal{{ $loop->index + 1 }}">Delete</button>
 
