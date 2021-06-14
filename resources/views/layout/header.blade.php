@@ -40,8 +40,9 @@
                             aria-current="page" href="{{ url('/manage-class-video') }}">Manage Class Video</a>
                     </li>
                 </ul>
-                <form class=" d-flex">
-                    <button class="btn btn-outline-light btn-sm" type="submit">
+                <form class=" d-flex" method="POST" action="logout">
+                    @CSRF
+                    <button class="btn btn-outline-light btn-sm" type="submit" >
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </button>

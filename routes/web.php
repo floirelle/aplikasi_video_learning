@@ -48,3 +48,6 @@ Route::post('/update-course', 'CourseController@updateCourse');
 
 Route::get('/add-video/{session_id}', 'VideoController@showAddVideo');
 Route::post('/insert-video', 'VideoController@insertVideo');
+Route::post("/login",'UserController@login');
+Route::post("/logout",'UserController@logout');
+Route::get("/test","CourseController@getAllCourse");

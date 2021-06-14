@@ -75,7 +75,9 @@
             width: 100%;
             height: 100%;
         }
-
+        #error-msg{
+            color:red;
+        }
     </style>
     <script>
         ! function(a) {
@@ -349,7 +351,7 @@
 
                 <div class="panel-body">
 
-                    <form name="form" id="form" class="form-horizontal" method="POST">
+                    <form name="form" action ="login" id="form" class="form-horizontal" method="POST">
                         @csrf
                         <div class="input-group">
                             <span class="input-group-addon" style="background-color: #FFC107"><i
@@ -368,9 +370,14 @@
                         <div class="form-group">
                             <!-- Button -->
                             <div class="col-sm-12 controls">
-                                <button type="submit" href="#" class="btn btn-primary pull-right"
-                                    style="background-color: #285185"> Log in</button>
+                            @if($errors->any())
+                                <span id="error-msg">{{$errors->first()}}</span>
+                            @endif
+                                <input type="submit" class="btn btn-primary pull-right"
+                                    value="Log In"
+                                    style="background-color: #285185"></input>
                             </div>
+                            
                         </div>
 
                     </form>
@@ -641,7 +648,7 @@
         c-0.049-0.366-0.046-0.739-0.025-1.11c0.009-0.125,0.024-0.25,0.042-0.375C12.122,17.814,12.141,17.732,12.164,17.65z"></path>
         </g>
     </svg>
-    -->
+    
 </body>
 
 </html>

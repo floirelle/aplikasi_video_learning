@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class CourseController extends Controller
 {
@@ -89,5 +90,39 @@ class CourseController extends Controller
         }
 
         return redirect('manage-learning-video');
+    }
+    public function getAllCourse(Request $request){
+        $url = config("global.base_url")."Course/GetCourseOutlineInSemester";
+        $even = config("global.Even_2020_2021");
+        $token = $request->session()->get("token");
+        $response = Http::withToken($token)->get($url,[
+            "semesterId"=>$even,
+        ]);
+        $courses = $response->collect();
+        foreach($courses as $course){
+            $newUrl = config("global.base_url")."Course/GetCourseOutlineDetail";
+            $courseOutlineId = $course["CourseOutlineId"];
+            $newResponse = Http::withToken($token)->get($newUrl,[
+                "courseOutlineId"=>$courseOutlineId
+            ]);
+            $courseDetail = $newResponse->json();
+            $newCourse = new Course;
+            $newCourse->course_code = $courseDetail["CourseCode"];
+            $newCourse->course_id = $course["CourseOutlineId"];
+            $newCourse->course_name = $course["Name"];
+            $newCourse->course_description = $courseDetail["CourseDescription"];
+            $newCourse->save();
+
+            foreach($course["Laboratory"] as $session){
+                $session_count = $session["Session"];
+                $topic = $session["Topic"];
+                $newSession = new Session;
+                $newSession->course_code=$courseDetail["CourseCode"];
+                $newSession->session_name=$session_count;
+                $newSession->topic=$topic;
+                $newSession->save();
+            }
+
+        }
     }
 }

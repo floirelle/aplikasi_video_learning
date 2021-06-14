@@ -21,6 +21,7 @@ class CreateSessionsTable extends Migration
                 ->on('courses')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->string('topic');
             $table->string('session_name');
             $table->timestamps();
         });

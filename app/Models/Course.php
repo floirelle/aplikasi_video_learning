@@ -14,10 +14,10 @@ class Course extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'course_id',
         'course_code',
         'course_name',
         'course_description',
-        'course_session'
     ];
 
     public function sessions()
