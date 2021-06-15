@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use Illuminate\Support\Facades\View;
 
 class UserController extends Controller
 {
@@ -76,22 +77,23 @@ class UserController extends Controller
         //put username in session
         $request->session()->put('username', $username);
         $request->session()->put('token',$token);
-
+        $request->session()->put('name',$name);
         
 
-        //check existing user
-        if($this->checkExistingUser($username))
-        {
-            $this->updateToken($username,$token);
-        }
-        else{
-            $newUser = new User;
-            $newUser->name = $name;
-            $newUser->username = $username;
-            $newUser->role = $role;
-            $newUser->access_token = $token;
-            $newUser->save();
-        }
+        // //check existing user
+        // if($this->checkExistingUser($username))
+        // {
+        //     $this->updateToken($username,$token);
+        // }
+        // else{
+        //     $newUser = new User;
+        //     $newUser->name = $name;
+        //     $newUser->username = $username;
+        //     $newUser->role = $role;
+        //     $newUser->access_token = $token;
+        //     $newUser->save();
+        // }
+        
         return redirect('learning-video');
     }
 
@@ -100,7 +102,7 @@ class UserController extends Controller
         return redirect("login");
     }
 
-    
+
     
 }
 

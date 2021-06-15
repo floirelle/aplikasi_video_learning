@@ -2,7 +2,7 @@
 @section('title', 'Learning Video')
 @section('content')
     <h1>Learning Video</h1>
-
+    
     <div class="accordion" id="accordionExample" style="margin-top: 20px">
         @foreach ($courses as $course)
             <div class="accordion-item">

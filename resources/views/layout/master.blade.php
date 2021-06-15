@@ -58,6 +58,12 @@
         a {
             text-decoration: none;
         }
+        .header-container{
+            display:flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
 
     </style>
 

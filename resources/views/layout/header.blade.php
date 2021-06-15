@@ -1,14 +1,11 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="display: block; background-color: #285185;">
-        <div style="padding: 1%; background-color: #FFC107; display: flex;">
+        <div style="padding: 1%; background-color: #FFC107; display: flex; "class="header-container">
             <a href="{{ url('learning-video') }}"><img src=" {{ asset('logo.png') }}" alt=""
                     style="width: 90px; height: 50px; margin-left: 10px"></a>
-            {{-- <form class="d-flex" style="flex: 1; padding: 1%" action="searchvideo" method="GET">
-                <input class="form-control" type="search" name="keyword" placeholder="Search video name..."
-                    aria-label="Search">
-                <button class="btn btn-warning" type="submit" style="margin-left: 5px"><i
-                        class="fas fa-search"></i></button>
-            </form> --}}
+            <span class="header-name"> @if(session()->has("name")){{session()->get("name")}}
+            @else Gak ada
+        @endif</span>
         </div>
         <div class="container-fluid" style="padding: 1%">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
