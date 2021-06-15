@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
@@ -18,7 +18,11 @@
     {{-- Icon AWESOME --}}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-
+    
+    <!-- jquery  -->
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+    
     <style>
         .navbar {
             padding-top: 0;
@@ -64,7 +68,19 @@
             justify-content: space-between;
             align-items: center;
         }
+        .main-header-container{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
+        .main-header-filter{
+            width:400px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            
+        }
     </style>
 
     <title>@yield('title')</title>

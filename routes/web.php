@@ -23,7 +23,7 @@ Route::get('/login', function () {
 });
 
 Route::get('/learning-video', 'CourseController@showLearningVideo');
-
+Route::post('/learning-video','CourseController@filterCourse');
 Route::get('/class-video', function () {
     return view('class-video');
 });
@@ -42,7 +42,7 @@ Route::get('/manage-class-video', function () {
 
 Route::post('/insert-course', 'CourseController@insertCourse');
 Route::get('/delete-course/{course_code}', 'CourseController@deleteCourse');
-Route::get('/view-course/{course_code}', 'CourseController@showDetailCourse')->name('view-course');
+Route::post('/view-course', 'CourseController@showDetailCourse')->name('view-course');
 Route::get('/edit-course/{course_code}', 'CourseController@showEditCourse');
 Route::post('/update-course', 'CourseController@updateCourse');
 
