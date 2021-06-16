@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        $this->call(CourseSeeder::class);
+        // $this->call(CourseSeeder::class);
         // DB::table('courses')->insert([
         //     'course_code' => 'COMP6178',
         //     'course_name' => 'Introduction to Programming',
@@ -177,27 +177,39 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         DB::table('videos')->insert([
-            'session_id' => '1',
-            'course_id' =>'',
-            'video_title' => 'Introduction to Java, IDE, Compile, Run, Debug, Naming Convention',
-            'video_maker' => 'AC19-1',
-            'video_software_description' => 'Eclipse, Java 8',
-            'video_file' => 'https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/COMP6178%2FIntroduction%20to%20Java%2C%20IDE%2C%20Compile%2C%20Run%2C%20Debug%2C%20Naming%20Convention.mp4?alt=media&token=2e0793cb-514f-435c-be07-85ecb4b0fc23'
+            "video_title"=>"Introduction to SSMS",
+            "session_name"=>'1',
+            "course_id"=>"ec441e77-649a-e511-a024-d8d385fce79c",
+            "class_code"=>"",
+            "video_maker"=>"AC",
+            "video_software_description"=>"",
+            "video_file"=>"https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/ISYS6123%2FIntroduction%20to%20SSMS.mp4?alt=media&token=a6068dd6-da44-41ad-b302-dca59f67a756"
+            
         ]);
         DB::table('videos')->insert([
-            'session_id' => '1',
-            'video_title' => 'Part 1 - Input Output, Data Type, Output Format, Variable, Static, Constant',
-            'video_maker' => 'AC19-1',
-            'video_software_description' => 'Eclipse, Java 8',
-            'video_file' => 'https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/COMP6178%2FPart%201%20-%20Input%20Output%2C%20Data%20Type%2C%20Output%20Format%2C%20Variable%2C%20Static%2C%20Constant.mp4?alt=media&token=1f010925-dd9b-44d5-af79-6ac7d9ac5c19'
+            "video_title"=>"Introduction to SSMS",
+            "session_name"=>'1',
+            "course_id"=>"ec441e77-649a-e511-a024-d8d385fce79c",
+            "class_code"=>"",
+            "video_maker"=>"AC",
+            "video_software_description"=>"",
+            "video_file"=>"https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/ISYS6123%2FIntroduction%20to%20SSMS.mp4?alt=media&token=a6068dd6-da44-41ad-b302-dca59f67a756"
+            
         ]);
+        // DB::table('videos')->insert([
+        //     'session_id' => '1',
+        //     'video_title' => 'Part 1 - Input Output, Data Type, Output Format, Variable, Static, Constant',
+        //     'video_maker' => 'AC19-1',
+        //     'video_software_description' => 'Eclipse, Java 8',
+        //     'video_file' => 'https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/COMP6178%2FPart%201%20-%20Input%20Output%2C%20Data%20Type%2C%20Output%20Format%2C%20Variable%2C%20Static%2C%20Constant.mp4?alt=media&token=1f010925-dd9b-44d5-af79-6ac7d9ac5c19'
+        // ]);
 
-        DB::table('videos')->insert([
-            'session_id' => '1',
-            'video_title' => 'Part 2 - Input Output, Data Type, Output Format, Variable, Static, Constant',
-            'video_maker' => 'AC19-1',
-            'video_software_description' => 'Eclipse, Java 8',
-            'video_file' => 'https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/COMP6178%2FPart%202%20-%20Input%20Output%2C%20Data%20Type%2C%20Output%20Format%2C%20Variable%2C%20Static%2C%20Constant.mp4?alt=media&token=e1b2f3ab-8fc6-4d90-917c-491d8aa2723c'
-        ]);
+        // DB::table('videos')->insert([
+        //     'session_id' => '1',
+        //     'video_title' => 'Part 2 - Input Output, Data Type, Output Format, Variable, Static, Constant',
+        //     'video_maker' => 'AC19-1',
+        //     'video_software_description' => 'Eclipse, Java 8',
+        //     'video_file' => 'https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/COMP6178%2FPart%202%20-%20Input%20Output%2C%20Data%20Type%2C%20Output%20Format%2C%20Variable%2C%20Static%2C%20Constant.mp4?alt=media&token=e1b2f3ab-8fc6-4d90-917c-491d8aa2723c'
+        // ]);
     }
 }
