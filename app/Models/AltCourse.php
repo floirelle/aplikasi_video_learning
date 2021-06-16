@@ -16,7 +16,8 @@ class AltCourse extends Model
     protected $fillable = [
         'course_id',
         'course_name',
-        'course_class'
+        'course_class',
+        'course_description'
     ];
 
     public function sessions()

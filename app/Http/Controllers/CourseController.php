@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AltCourse;
 use App\Models\Course;
 use App\Models\Session;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -118,12 +119,32 @@ class CourseController extends Controller
         return redirect('manage-learning-video');
     }
 
-    public function showDetailCourse()
+    public function showDetailCourse(Request $request)
     {
-        // dd($_POST);
-        $course = Course::where('course_id', $_POST['course_id'])->first();
+        $url = config("global.base_url")."Course/GetCourseOutlineDetail";
+        $even = config("global.Even_2020_2021");
+        $token = $request->session()->get("token");
+        $response = Http::withToken($token)->get($url,[
+            "courseOutlineId"=>$_POST['course_id'],
+        ]);
+        $resp = $response->json();
+        // dd($resp);
+        $course = new AltCourse;
+        $course->course_id = $resp["Id"];
+        $course->course_name = $resp["Description"];
+        $course->class="";
+        $course->course_description=$resp["CourseDescription"];
+        $sessions = [];
+        foreach($resp["Laboratory"] as $s){
+            $session = new Session;
+            $session->session_name=$s["Session"];
+            $session->topic=$s["Topics"];
+            $session->videos = Video::where('session_name',$s["Session"])->where('course_id',$resp["Id"])->get();
+            array_push($sessions,$session);
+        }
+        // $course = Course::where('course_id', $_POST['course_id'])->first();
         // dd($course);
-        return view('detail-course')->with('course', $course);
+        return view('detail-course')->with('course', $course)->with('sessions',$sessions);
     }
 
     public function showEditCourse($course_code)

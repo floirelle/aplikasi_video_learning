@@ -1,12 +1,12 @@
 @extends('layout.master')
 @section('title', 'Detail Course')
 @section('content')
-    <h3>{{ $course->course_code }} - {{ $course->course_name }}</h3>
-    <p>{{ $course->course_description }}</p>
+    <h3>{{ $course->course_name }}</h3>
+    <p><?php echo  $course->course_description ?></p>
     <div class="d-flex align-items-start">
         <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"
             style="width: 15%; background-color: #285185; padding: 1%">
-            @foreach ($course->sessions as $session)
+            @foreach ($sessions as $session)
                 <button class="nav-link {{ $loop->index + 1 == 1 ? 'active' : '' }}"
                     id="v-pills-{{ $loop->index + 1 }}-tab" data-bs-toggle="pill"
                     data-bs-target="#v-pills-{{ $loop->index + 1 }}" type="button" role="tab"
@@ -15,7 +15,7 @@
             @endforeach
         </div>
         <div class="tab-content" id="v-pills-tabContent" style="width: 100%">
-            @foreach ($course->sessions as $session)
+            @foreach ($sessions as $session)
                 <div class="tab-pane fade {{ $loop->index + 1 == 1 ? 'active show' : '' }}"
                     style="background-color: #285185;padding: 1%" id="v-pills-{{ $loop->index + 1 }}" role="tabpanel"
                     aria-labelledby="v-pills-{{ $loop->index + 1 }}-tab">

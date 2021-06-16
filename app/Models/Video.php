@@ -13,7 +13,7 @@ class Video extends Model
     protected $fillable = [
         'video_title',
         'session_name',
-        'course_code',
+        'course_id',
         'class_code',
         'video_maker',
         'video_software_description',
