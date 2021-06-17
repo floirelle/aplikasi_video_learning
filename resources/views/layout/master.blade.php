@@ -18,11 +18,11 @@
     {{-- Icon AWESOME --}}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    
+
     <!-- jquery  -->
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
     </script>
-    
+
     <style>
         .navbar {
             padding-top: 0;
@@ -62,25 +62,32 @@
         a {
             text-decoration: none;
         }
-        .header-container{
-            display:flex;
+
+        .list-group-item {
+            padding: 0.8%;
+        }
+
+        .header-container {
+            display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
         }
-        .main-header-container{
+
+        .main-header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .main-header-filter{
-            width:400px;
+        .main-header-filter {
+            width: 400px;
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            
+
         }
+
     </style>
 
     <title>@yield('title')</title>

@@ -10,76 +10,72 @@ use Illuminate\Support\Facades\View;
 class UserController extends Controller
 {
     //
-   
-    public function getUser($username){
+
+    public function getUser($username)
+    {
         $user = User::where('username', 'like', $username)->first();
         return $user;
     }
 
-    public function checkExistingUser($username){
+    public function checkExistingUser($username)
+    {
         $user = $this->getUser($username);
         return $user == NULL ? false : true;
     }
 
-    public function updateToken($username,$token){
+    public function updateToken($username, $token)
+    {
         $user = $this->getuser($username);
         $user->access_token = $token;
         $user->save();
     }
-    public function login(Request $request){
-        // $a = "5";
-        // $b = "$a 12";
-        // dd($b);
+    public function login(Request $request)
+    {
         $base_url = config('global.base_url');
-        $url =  "$base_url/Account/LogOn";
-        // dd($url);
+        $url =  $base_url . "Account/LogOn";
         $username = $request->get('user');
         $password = $request->get('password');
         $isStudent = false;
-        if (!str_contains($username,"-")){
-            $url =  "$base_url"."Account/LogOnBinusian";
+        if (!str_contains($username, "-")) {
+            $url =  "$base_url" . "Account/LogOnBinusian";
             $isStudent = true;
         }
-        $response = Http::asForm()->post($url,[
-            "username"=>$username,
-            "password"=>$password
+        $response = Http::asForm()->post($url, [
+            "username" => $username,
+            "password" => $password
         ]);
-        if($response->successful() == false){
+        if ($response->successful() == false) {
             return redirect("login")->withErrors("Invalid Username or Password");
         }
         $name = "";
         $token = "";
         $role = "";
-        if($isStudent == true)
-        {
+        if ($isStudent == true) {
             $role = "Student";
             $token = $response->json()["Token"]["token"];
             // login as student
-            $new_url = $base_url."Student";
-            $newResponse = Http::get($new_url,[
-                "nim"=>$username
+            $new_url = $base_url . "Student";
+            $newResponse = Http::get($new_url, [
+                "nim" => $username
             ]);
             $name = $newResponse->json()["Name"];
-           
-        }
-        else{
+        } else {
             // login as ast
             $role = "Assistant";
             $token = $response->json()["access_token"];
-            $new_url = $base_url."Assistant";
-            $newResponse = Http::get($new_url,[
-                "initial"=>$username,
-                "generation"=>substr($username,2)
+            $new_url = $base_url . "Assistant";
+            $newResponse = Http::get($new_url, [
+                "initial" => $username,
+                "generation" => substr($username, 2)
             ]);
             $name = $newResponse->json()[0]["Name"];
-            
         }
         //put username in session
         $request->session()->put('username', $username);
-        $request->session()->put('role',$role);
-        $request->session()->put('token',$token);
-        $request->session()->put('name',$name);
-        
+        $request->session()->put('role', $role);
+        $request->session()->put('token', $token);
+        $request->session()->put('name', $name);
+
 
         // //check existing user
         // if($this->checkExistingUser($username))
@@ -94,16 +90,13 @@ class UserController extends Controller
         //     $newUser->access_token = $token;
         //     $newUser->save();
         // }
-        
+
         return redirect('learning-video');
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $request->session()->flush();
         return redirect("login");
     }
-
-
-    
 }
-
