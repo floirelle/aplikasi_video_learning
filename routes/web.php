@@ -51,3 +51,5 @@ Route::post('/insert-video', 'VideoController@insertVideo');
 Route::post("/login",'UserController@login');
 Route::post("/logout",'UserController@logout');
 Route::get("/test","CourseController@getAllCourse");
+Route::post("/getsessions","CourseController@getCourseSession");
+// Route::get("/getsessions","CourseController@getCourseSession");

@@ -4,7 +4,7 @@
             <a href="{{ url('learning-video') }}"><img src=" {{ asset('logo.png') }}" alt=""
                     style="width: 90px; height: 50px; margin-left: 10px"></a>
             <span class="header-name"> @if(session()->has("name")){{session()->get("name")}}
-            @else Gak ada
+            @else No Name
         @endif</span>
         </div>
         <div class="container-fluid" style="padding: 1%">

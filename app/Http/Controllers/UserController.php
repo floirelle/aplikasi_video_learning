@@ -68,6 +68,7 @@ class UserController extends Controller
                 "initial" => $username,
                 "generation" => substr($username, 2)
             ]);
+            
             $name = $newResponse->json()[0]["Name"];
         }
         //put username in session

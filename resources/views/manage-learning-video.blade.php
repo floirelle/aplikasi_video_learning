@@ -1,3 +1,4 @@
+
 @extends('layout.master')
 @section('title', 'Manage Learning Video')
 @section('content')
@@ -6,11 +7,13 @@
         @foreach ($courses as $course)
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading{{ $loop->index + 1 }}">
+                    
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse{{ $loop->index + 1 }}" aria-expanded="true"
-                        aria-controls="collapse{{ $loop->index + 1 }}">
-                        {{ $course->course_name }}
+                            data-bs-target="#collapse{{ $loop->index + 1 }}" aria-expanded="true"
+                            aria-controls="collapse{{ $loop->index + 1 }}" onclick="getsessions('{{$course->course_id}}','{{$loop->index}}')">
+                            {{ $course->course_name }}
                     </button>
+                    
                 </h2>
                 <div id="collapse{{ $loop->index + 1 }}" class="accordion-collapse collapse"
                     aria-labelledby="heading{{ $loop->index + 1 }}" data-bs-parent="#accordionExample">
@@ -18,15 +21,7 @@
 
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                                    aria-selected="true">Session 1</button>
-                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
-                                    aria-selected="false">Session 2</button>
-                                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
-                                    aria-selected="false">Session 3</button>
+                                
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
@@ -40,54 +35,8 @@
                                             <th style="width: 200px">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($courses as $course)
-                                            <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $course->course_name }}</td>
-                                                <td>
-                                                    <a
-                                                        href="{{ url('/view-course', ['course_code' => $course->course_code]) }}">
-                                                        <button type="button" class="btn btn-success btn-sm">View</button>
-                                                    </a>
-                                                    <a
-                                                        href="{{ url('edit-course', ['course_code' => $course->course_code]) }}">
-                                                        <button type="button" class="btn btn-warning btn-sm">Edit</button>
-                                                    </a>
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal{{ $loop->index + 1 }}">Delete</button>
-
-                                                </td>
-                                            </tr>
-                                            {{-- modal --}}
-                                            <div class="modal fade" id="exampleModal{{ $loop->index + 1 }}" tabindex="-1"
-                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">
-                                                                {{ $course->course_code }}-{{ $course->course_name }}
-                                                            </h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Are you sure to delete all of this selected course?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cancel</button>
-                                                            <a
-                                                                href="{{ url('/delete-course', ['course_code' => $course->course_code]) }}">
-                                                                <button type="button" class="btn btn-danger">Yes, I'm
-                                                                    sure</button>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
+                                    <tbody id="list-video">
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -103,4 +52,113 @@
             </div>
         @endforeach
     </div>
+    
 @endsection
+
+
+<script>
+    var videos = [];
+    var prevIdx = -1;
+    function getsessions(id,idx)
+    {    
+        if(prevIdx == -1 || prevIdx !=idx)$(".loading-modal").css("visibility","visible");
+        prevIdx = idx;
+        videos = [];
+        console.log(idx);
+        $.ajax({
+           
+            url: "{{url('getsessions')}}",
+            data:{
+                id:id,
+                _token: '{!! csrf_token() !!}',
+            },
+            method:"post"
+        }).then(function(data){
+            var ht="";
+            for(var dt in data){
+                if (dt == 0){
+                    ht+=`<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                                    aria-selected="true" onclick="showVideos(${dt},${idx})">Session `+data[dt]["session_name"]+`</button>`;
+                }
+                else{
+                    ht+=`<button class="nav-link" id="nav-home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                                    aria-selected="true" onclick="showVideos(${dt},${idx})">Session `+data[dt]["session_name"]+`</button>`;
+                }
+                // console.log(data[0]["videos"]);
+                var vids = data[dt]["videos"];
+                var sessionVideos = []
+                for(vidx in vids){
+                    sessionVideos.push({
+                        "course_id":vids[vidx]["course_id"],
+                        "video_file":vids[vidx]["video_file"],
+                        "video_title":vids[vidx]["video_title"],
+                    })
+                }
+                videos.push(sessionVideos)
+                
+            }
+            console.log(ht);
+            $(`.nav-tabs:eq(${idx})`).html(ht)
+            
+            showVideos(0,idx);
+            
+        })
+    }
+
+    function showVideos(id,idx){
+        var body = "";
+        console.log(videos);
+        for(vidx in  videos[id]){
+            var currVid = videos[id][vidx];
+            body +=`
+            <tr>
+            <td>`+ (+vidx+1) +`</td>
+            <td>`+currVid["video_title"]+`</td>
+            <td>
+            <a href="{{ url('/view-course', ['course_code' => $course->course_code]) }}">
+                <button type="button" class="btn btn-success btn-sm">View</button>
+            </a>
+            <a
+                href="{{ url('edit-course', ['course_code' => $course->course_code]) }}">
+                <button type="button" class="btn btn-warning btn-sm">Edit</button>
+            </a>
+            <button type="button" class="btn btn-danger btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal`+ (vidx+1) +` 1 }}">Delete</button>
+            </td>
+            </tr>
+            {{-- modal --}}
+            <div class="modal fade" id="exampleModal`+ (vidx+1) +`" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            {{ $course->course_code }}-{{ $course->course_name }}
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure to delete all of this selected course?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <a
+                            href="{{ url('/delete-course', ['course_code' => $course->course_code]) }}">
+                            <button type="button" class="btn btn-danger">Yes, I'm
+                                sure</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </div>
+            `;
+        }
+        $("tbody").html(body)
+        $(".loading-modal").css("visibility","hidden");
+    }
+</script>

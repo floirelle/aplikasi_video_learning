@@ -87,13 +87,37 @@
             align-items: center;
 
         }
-
+        .loading-modal{
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            visibility: hidden;
+        }
+        .loading-modal img{
+            margin-top: 200px;
+            width: 100px;
+            height: 100px;
+        }
+        .loading-modal p{
+            color: white;
+            font-size: 2em;
+            
+        }
     </style>
 
     <title>@yield('title')</title>
 </head>
 
 <body style="background-color: #CCD9E2">
+    <div class="loading-modal" >
+    <img src=" {{ asset('loading-gif.gif') }}">
+    <p class="loading-text">Loading</p>
+    </div>
     @include('layout.header')
     <div style="margin-top: 150px; padding: 1%">
         @yield('content')

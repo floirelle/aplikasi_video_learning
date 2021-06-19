@@ -17,7 +17,8 @@ class AltCourse extends Model
         'course_id',
         'course_name',
         'course_class',
-        'course_description'
+        'course_description',
+        'sessions',
     ];
 
     public function sessions()
