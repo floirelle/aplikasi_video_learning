@@ -70,10 +70,11 @@ class CourseController extends Controller
     }
 
 
-    public function getCourseSession(Request $request){
-        
+    public function getCourseSession(Request $request)
+    {
+
         $id = $_POST["id"];
-        
+
         $token = $request->session()->get("token");
         // $courses = [];
         $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
@@ -95,48 +96,18 @@ class CourseController extends Controller
     {
         $even = config("global.Even_2020_2021");
         $token = $request->session()->get("token");
-        // $courses = [];
         $url = config("global.base_url") . "Course/GetCourseOutlineInSemester";
         $response = Http::withToken($token)->get($url, [
             "semesterId" => $even,
         ]);
         $allCourse = [];
-        $i=0;
         foreach ($response->collect() as $c) {
             $course = new AltCourse;
             $course->course_id = $c["CourseOutlineId"];
             $course->course_name = $c["Name"];
-            // $course->course_class=$c["Class"];
-            
-            // $newUrl = config("global.base_url") . "Course/GetCourseOutlineDetail";
-            // $newResponse = Http::withToken($token)->get($newUrl, [
-            //     "courseOutlineId" => $c["CourseOutlineId"]
-            // ]);
-            // $sessions=[];
-            // $i+=1;
-            
-            // // dd($newResponse->json());
-            // if($newResponse->json() == null){
-
-            //     continue;
-            // }
-            // foreach ($newResponse->json()["Laboratory"] as $session) {
-                
-               
-            //     $session_count = $session["Session"];
-            //     $topic = $session["Topics"];
-            //     $session = new Session;
-            //     $session->session_name = $session_count;
-            //     $session->topic = $topic;
-            //     $session->videos = Video::where('session_name', $session_count)->where('course_id', $c["CourseOutlineId"])->get();
-            //     array_push($sessions, $session);
-            // }
-            // $course->sessions = $sessions;
-            
             array_push($allCourse, $course);
         }
-        // dd($allCourse);
-        
+
         return view('manage-learning-video')->with('courses', $allCourse);
     }
 

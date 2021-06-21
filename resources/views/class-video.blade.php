@@ -1,30 +1,23 @@
 @extends('layout.master')
 @section('title', 'Class Video')
 @section('content')
-    <h1>Class Video</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus corporis porro et sint debitis necessitatibus
-        eaque modi possimus quaerat error, doloremque exercitationem blanditiis odio ex pariatur ratione, nisi repellat
-        soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo sapiente necessitatibus a blanditiis
-        consequatur beatae animi optio voluptatem! Obcaecati, eius quibusdam deleniti sequi reiciendis nobis illo atque
-        eligendi quod aliquam?</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus corporis porro et sint debitis necessitatibus
-        eaque modi possimus quaerat error, doloremque exercitationem blanditiis odio ex pariatur ratione, nisi repellat
-        soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo sapiente necessitatibus a blanditiis
-        consequatur beatae animi optio voluptatem! Obcaecati, eius quibusdam deleniti sequi reiciendis nobis illo atque
-        eligendi quod aliquam?</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus corporis porro et sint debitis necessitatibus
-        eaque modi possimus quaerat error, doloremque exercitationem blanditiis odio ex pariatur ratione, nisi repellat
-        soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo sapiente necessitatibus a blanditiis
-        consequatur beatae animi optio voluptatem! Obcaecati, eius quibusdam deleniti sequi reiciendis nobis illo atque
-        eligendi quod aliquam?</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus corporis porro et sint debitis necessitatibus
-        eaque modi possimus quaerat error, doloremque exercitationem blanditiis odio ex pariatur ratione, nisi repellat
-        soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo sapiente necessitatibus a blanditiis
-        consequatur beatae animi optio voluptatem! Obcaecati, eius quibusdam deleniti sequi reiciendis nobis illo atque
-        eligendi quod aliquam?</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus corporis porro et sint debitis necessitatibus
-        eaque modi possimus quaerat error, doloremque exercitationem blanditiis odio ex pariatur ratione, nisi repellat
-        soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo sapiente necessitatibus a blanditiis
-        consequatur beatae animi optio voluptatem! Obcaecati, eius quibusdam deleniti sequi reiciendis nobis illo atque
-        eligendi quod aliquam?</p>
+    <div class="main-header-container">
+        <h1>Class Video</h1>
+    </div>
+    <ul class="list-group" style="margin-top: 15px">
+        @foreach ($courses as $course)
+            <li class="list-group-item">
+                <div style="display: flex;justify-content: space-between; margin-left: 1%; margin-right: 1%">
+                    <div style="display: flex;align-items: center">
+                        {{ $course->course_name }} - {{ $course->course_class }}
+                    </div>
+                    <form action="view-course" method="post">
+                        @csrf
+                        <input type="hidden" name="course_id" id="course_id" value="{{ $course->course_id }}">
+                        <button type="submit" class="btn btn-warning btn-sm">Show All Video</button>
+                    </form>
+                </div>
+            </li>
+        @endforeach
+    </ul>
 @endsection

@@ -1,10 +1,6 @@
 @extends('layout.master')
 @section('title', 'Learning Video')
 @section('content')
-
-    @if (isset($test))
-    Ada Test
-    @endif
     <div class="main-header-container">
         <h1>Learning Video</h1>
         <form method="GET" action="">

@@ -20,7 +20,6 @@ class VideoController extends Controller
     {
         $this->validate($r, [
             'video_title' => 'required|min:5',
-            'video_maker' => 'required',
             'video_software_description' => 'required',
             'video_link' => 'required',
         ]);
@@ -29,14 +28,45 @@ class VideoController extends Controller
 
         Video::create([
             'video_title' => $r->video_title,
-            'video_maker' => $r->video_maker,
             'video_software_description' => $r->video_software_description,
             'video_file' => $r->video_link,
-            'session_id' => $r->session_id
+            'session_id' => $r->session_id,
+            'video_type' => 'VBL'
         ]);
 
         // $data = app('firebase.storage')->getBucket()->upload($video, ['name' => 'COMP6178/' . $nama_file]);
 
         return redirect()->route('view-course', ['course_code' => $session->course->course_code]);
+    }
+
+    public function showDetailVideo($video_id)
+    {
+        $video = Video::where('video_id', $video_id)->first();
+
+        return view('edit-video')->with('video', $video);
+    }
+
+    public function updateVideo(Request $r)
+    {
+        if ($r->video_file != null) {
+            Video::where('video_id', $r->video_id)->update([
+                'video_title' => $r->video_title,
+                'video_software_description' => $r->video_software_description,
+                'video_file' => $r->video_link
+            ]);
+        } else {
+            Video::where('video_id', $r->video_id)->update([
+                'video_title' => $r->video_title,
+                'video_software_description' => $r->video_software_description
+            ]);
+        }
+
+        return redirect()->route('manage-learning-video');
+    }
+
+    public function deleteVideo($video_id)
+    {
+        Video::where('video_id', $video_id)->delete();
+        return redirect()->route('manage-learning-video');
     }
 }
