@@ -89,15 +89,18 @@
                     ] + `</button>`;
                 }
                 var vids = data[dt]["videos"];
+
                 var sessionVideos = []
                 for (vidx in vids) {
-                    console.log(vids[vidx]["video_id"])
-                    sessionVideos.push({
-                        "course_id": vids[vidx]["course_id"],
-                        "video_id": vids[vidx]["video_id"],
-                        "video_file": vids[vidx]["video_file"],
-                        "video_title": vids[vidx]["video_title"],
-                    })
+                    console.log()
+                    if (vids[vidx]["video_type"] == 'VBL') {
+                        sessionVideos.push({
+                            "course_id": vids[vidx]["course_id"],
+                            "video_id": vids[vidx]["video_id"],
+                            "video_file": vids[vidx]["video_file"],
+                            "video_title": vids[vidx]["video_title"],
+                        })
+                    }
                 }
                 videos.push(sessionVideos)
 

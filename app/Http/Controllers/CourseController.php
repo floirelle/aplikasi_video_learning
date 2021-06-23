@@ -111,38 +111,6 @@ class CourseController extends Controller
         return view('manage-learning-video')->with('courses', $allCourse);
     }
 
-    public function insertCourse(Request $r)
-    {
-        $this->validate($r, [
-            'course_code' => 'required|min:8|unique:courses',
-            'course_name' => 'required|min:5',
-            'course_description' => 'required',
-            'course_session' => 'required|gt:0'
-        ]);
-
-        Course::create([
-            'course_code' => $r->course_code,
-            'course_name' => $r->course_name,
-            'course_description' => $r->course_description,
-            'course_session' => $r->course_session
-        ]);
-
-        for ($i = 1; $i <= $r->course_session; $i++) {
-            Session::create([
-                'course_code' => $r->course_code,
-                'session_name' => 'Session ' . $i
-            ]);
-        }
-
-        return redirect('manage-learning-video');
-    }
-
-    public function deleteCourse($course_code)
-    {
-        Course::where('course_code', $course_code)->delete();
-        return redirect('manage-learning-video');
-    }
-
     public function showDetailCourse(Request $request)
     {
         $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
@@ -162,7 +130,7 @@ class CourseController extends Controller
             $session = new Session;
             $session->session_name = $s["Session"];
             $session->topic = $s["Topics"];
-            $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $resp["Id"])->get();
+            $session->videos = Video::where(['session_name' => $s["Session"], 'video_type' => 'VBL', 'course_id' => $resp["Id"]])->get();
             array_push($sessions, $session);
         }
         return view('detail-course')->with('course', $course)->with('sessions', $sessions);
