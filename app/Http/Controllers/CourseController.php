@@ -74,7 +74,7 @@ class CourseController extends Controller
     {
 
         $id = $_POST["id"];
-
+        $vid_type = $_POST["type"];
         $token = $request->session()->get("token");
         // $courses = [];
         $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
@@ -86,7 +86,8 @@ class CourseController extends Controller
             $session = new Session;
             $session->session_name = $s["Session"];
             $session->topic = $s["Topics"];
-            $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->get();
+            $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->where("video_type",$vid_type)->get();
+            // $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->where("video_type",$vid_type)->get();
             array_push($sessions, $session);
         }
         return $sessions;
@@ -111,11 +112,38 @@ class CourseController extends Controller
         return view('manage-learning-video')->with('courses', $allCourse);
     }
 
+    public function showManageClass(Request $request)
+    {
+        $even = config("global.Even_2020_2021");
+        $token = $request->session()->get("token");
+        $username = $request->session()->get("username");
+        $url = config("global.base_url") . "Assistant/GetClassTransactionByAssistantUsername";
+        $response = Http::withToken($token)->get($url, [
+            "username"=>$username,
+            "semesterId" => $even,
+        ]);
+        $allCourse = [];
+        
+        foreach ($response->collect() as $c) {
+            $course = new AltCourse;
+            $course->course_id = $c["CourseOutlineId"];
+            $course->course_name = $c["Subject"];
+            $course->course_class = $c["Class"];
+
+            array_push($allCourse, $course);
+        }
+
+        return view('manage-class-video')->with('courses', $allCourse);
+    }
+
+
     public function showDetailCourse(Request $request)
     {
+        // dd($_POST);
         $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
         $even = config("global.Even_2020_2021");
         $token = $request->session()->get("token");
+        $vid_type = $_POST["video_type"];
         $response = Http::withToken($token)->get($url, [
             "courseOutlineId" => $_POST['course_id'],
         ]);
@@ -123,14 +151,17 @@ class CourseController extends Controller
         $course = new AltCourse;
         $course->course_id = $resp["Id"];
         $course->course_name = $resp["Description"];
-        $course->class = "";
+        $course->course_class = "";
+        if(isset($_POST["course_class"])){
+            $course->course_class = $_POST["course_class"];
+        }
         $course->course_description = $resp["CourseDescription"];
         $sessions = [];
         foreach ($resp["Laboratory"] as $s) {
             $session = new Session;
             $session->session_name = $s["Session"];
             $session->topic = $s["Topics"];
-            $session->videos = Video::where(['session_name' => $s["Session"], 'video_type' => 'VBL', 'course_id' => $resp["Id"]])->get();
+            $session->videos = Video::where(['session_name' => $s["Session"], 'video_type' => $vid_type, 'course_id' => $resp["Id"]])->get();
             array_push($sessions, $session);
         }
         return view('detail-course')->with('course', $course)->with('sessions', $sessions);
@@ -200,5 +231,40 @@ class CourseController extends Controller
                 $newSession->save();
             }
         }
+    }
+
+    function getClassVideo(Request $request){
+        
+        $even = config("global.Even_2020_2021");
+        $token = $request->session()->get("token");
+        $role = $request->session()->get("role");
+        $uname = $request->session()->get("username");
+        if($role == "student"){
+            // show based on student url
+            $url = config("global.base_url") . "Student/GetStudentClassTransactionWithAssistant";
+            $response = Http::withToken($token)->get($url,[
+                "nim"=>$uname,
+                "semesterID"=>$even
+            ]);    
+            dd($response->json());
+        }
+        else{
+            $url = config("global.base_url") . "Assistant/GetClassTransactionByAssistantUsername";
+            $response = Http::withToken($token)->get($url,[
+                "username"=>$uname,
+                "semesterID"=>$even
+            ]);    
+            // dd($response->json());
+            $courses = [];
+            foreach($response->json() as $resp){
+                $course = new AltCourse;
+                $course->course_id = $resp["CourseOutlineId"];
+                $course->course_name =$resp["Subject"];
+                $course->course_class = $resp["Class"];
+                array_push($courses,$course);
+            }
+            return view('class-video')->with("courses",$courses);
+        }
+        
     }
 }

@@ -10,7 +10,7 @@
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse{{ $loop->index + 1 }}" aria-expanded="true"
                         aria-controls="collapse{{ $loop->index + 1 }}"
-                        onclick="getsessions('{{ $course->course_id }}','{{ $loop->index }}')">
+                        onclick="getsessions('{{ $course->course_id }}','{{ $loop->index }}','')">
                         {{ $course->course_name }}
                     </button>
 
@@ -60,7 +60,7 @@
     var videos = [];
     var prevIdx = -1;
 
-    function getsessions(id, idx) {
+    function getsessions(id, idx, cls) {
         if (prevIdx == -1 || prevIdx != idx) $(".loading-modal").css("visibility", "visible");
         prevIdx = idx;
         videos = [];
@@ -69,6 +69,8 @@
             url: "{{ url('getsessions') }}",
             data: {
                 id: id,
+                type:"vbl",
+                class:cls,
                 _token: '{!! csrf_token() !!}',
             },
             method: "post"
@@ -92,15 +94,13 @@
 
                 var sessionVideos = []
                 for (vidx in vids) {
-                    console.log()
-                    if (vids[vidx]["video_type"] == 'VBL') {
-                        sessionVideos.push({
+                    sessionVideos.push({
                             "course_id": vids[vidx]["course_id"],
                             "video_id": vids[vidx]["video_id"],
                             "video_file": vids[vidx]["video_file"],
                             "video_title": vids[vidx]["video_title"],
-                        })
-                    }
+                    })
+                    
                 }
                 videos.push(sessionVideos)
 

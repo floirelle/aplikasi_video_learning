@@ -14,6 +14,8 @@
                     <form action="view-course" method="post">
                         @csrf
                         <input type="hidden" name="course_id" id="course_id" value="{{ $course->course_id }}">
+                        <input type="hidden" name="video_type" id="video_type" value="record">
+                        <input type="hidden" name="course_class" id="course_class" value="{{$course->course_class}}">
                         <button type="submit" class="btn btn-warning btn-sm">Show All Video</button>
                     </form>
                 </div>

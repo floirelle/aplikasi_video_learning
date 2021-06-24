@@ -24,9 +24,7 @@ Route::get('/login', function () {
 
 Route::get('/learning-video', 'CourseController@showLearningVideo');
 Route::post('/learning-video', 'CourseController@filterCourse');
-Route::get('/class-video', function () {
-    return view('class-video');
-});
+Route::get('/class-video', 'CourseController@getClassVideo');
 
 Route::get('/my-playlist', function () {
     return view('my-playlist');
@@ -36,9 +34,7 @@ Route::get('/manage-learning-video', 'CourseController@showManageLearning')->nam
 Route::get('/add-course', function () {
     return view('add-course');
 });
-Route::get('/manage-class-video', function () {
-    return view('manage-class-video');
-});
+Route::get('/manage-class-video', 'CourseController@showManageClass');
 
 Route::post('/view-course', 'CourseController@showDetailCourse')->name('view-course');
 
