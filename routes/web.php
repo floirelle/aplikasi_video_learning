@@ -34,7 +34,7 @@ Route::get('/manage-learning-video', 'CourseController@showManageLearning')->nam
 Route::get('/add-course', function () {
     return view('add-course');
 });
-Route::get('/manage-class-video', 'CourseController@showManageClass');
+Route::get('/manage-class-video', 'CourseController@showManageClass')->name('manage-class-video');
 
 Route::post('/view-course', 'CourseController@showDetailCourse')->name('view-course');
 
@@ -50,4 +50,3 @@ Route::post("/login", 'UserController@login');
 Route::post("/logout", 'UserController@logout');
 Route::get("/test", "CourseController@getAllCourse");
 Route::post("/getsessions", "CourseController@getCourseSession");
-// Route::get("/getsessions","CourseController@getCourseSession");

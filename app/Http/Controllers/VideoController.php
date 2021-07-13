@@ -48,19 +48,23 @@ class VideoController extends Controller
 
     public function updateVideo(Request $r)
     {
+        $video = null;
         if ($r->video_file != null) {
-            Video::where('video_id', $r->video_id)->update([
+            $video = Video::where('video_id', $r->video_id)->first();
+            $video->update([
                 'video_title' => $r->video_title,
                 'video_software_description' => $r->video_software_description,
                 'video_file' => $r->video_link
             ]);
         } else {
-            Video::where('video_id', $r->video_id)->update([
+            $video = Video::where('video_id', $r->video_id)->first();
+            $video->update([
                 'video_title' => $r->video_title,
                 'video_software_description' => $r->video_software_description
             ]);
         }
-
+        // dd($video);
+        if($video->video_type == "record")return redirect()->route('manage-class-video');
         return redirect()->route('manage-learning-video');
     }
 

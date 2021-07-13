@@ -61,6 +61,7 @@
     var prevIdx = -1;
 
     function getsessions(id, idx, cls) {
+        var class_code = cls.trim() 
         if (prevIdx == -1 || prevIdx != idx) $(".loading-modal").css("visibility", "visible");
         prevIdx = idx;
         videos = [];
@@ -70,11 +71,12 @@
             data: {
                 id: id,
                 type:"record",
-                class:cls,
+                class:class_code,
                 _token: '{!! csrf_token() !!}',
             },
             method: "post"
         }).then(function(data) {
+            // console.log(data)
             var ht = "";
             for (var dt in data) {
                 if (dt == 0) {

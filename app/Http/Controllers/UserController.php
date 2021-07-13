@@ -29,8 +29,15 @@ class UserController extends Controller
         $user->access_token = $token;
         $user->save();
     }
+    private function getCurrentSemester(Request $request,String $token){
+        $base_url = config('global.base_url')."Schedule/GetSemesters";
+        $response = Http::withToken($token)->get($base_url);
+        $request->session()->put('semester_id', $response->json()[0]["SemesterId"]);
+        // dd($response->json()[0]["SemesterId"]);
+    }
     public function login(Request $request)
     {
+        
         $base_url = config('global.base_url');
         $url =  $base_url . "Account/LogOn";
         $username = $request->get('user');
@@ -71,12 +78,13 @@ class UserController extends Controller
             
             $name = $newResponse->json()[0]["Name"];
         }
+
         //put username in session
         $request->session()->put('username', $username);
         $request->session()->put('role', $role);
         $request->session()->put('token', $token);
         $request->session()->put('name', $name);
-
+        $this->getCurrentSemester($request, $token);
 
         // //check existing user
         // if($this->checkExistingUser($username))

@@ -720,7 +720,7 @@ class DatabaseSeeder extends Seeder
             "session_name" => '1',
             "video_type" => "record",
             "course_id" => "e4441e77-649a-e511-a024-d8d385fce79c",
-            "class_code" => "BO01",
+            "class_code" => "B001",
             "video_software_description" => "Dev C++",
             "video_file" => "https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/COMP6048%2Fsession%2010%2F03.%20Min%20Heap%20(Part%203).m4v?alt=media&token=274631e9-ff86-4f7d-b9e5-d01a0df5ad16"
         ]);

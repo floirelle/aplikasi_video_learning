@@ -14,7 +14,7 @@ class CourseController extends Controller
     public function showLearningVideo(Request $request)
     {
 
-        $even = config("global.Even_2020_2021");
+        $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
         $courses = [];
 
@@ -76,26 +76,36 @@ class CourseController extends Controller
         $id = $_POST["id"];
         $vid_type = $_POST["type"];
         $token = $request->session()->get("token");
+        $class = $_POST["class"];
         // $courses = [];
         $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
         $response = Http::withToken($token)->get($url, [
             "courseOutlineId" => $id,
         ]);
         $sessions = [];
+        
         foreach ($response->json()["Laboratory"] as $s) {
             $session = new Session;
             $session->session_name = $s["Session"];
             $session->topic = $s["Topics"];
-            $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->where("video_type",$vid_type)->get();
+            if($class == null){
+                $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->where("video_type",$vid_type)->get(); 
+            }
+            else{
+                $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->where("video_type",$vid_type)->where("class_code",$class)->get();
+            }
+            // $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->where("video_type",$vid_type)->get();
+            $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->where("video_type",$vid_type)->where("class_code",$class)->get();
             // $session->videos = Video::where('session_name', $s["Session"])->where('course_id', $id)->where("video_type",$vid_type)->get();
             array_push($sessions, $session);
         }
+        
         return $sessions;
     }
 
     public function showManageLearning(Request $request)
     {
-        $even = config("global.Even_2020_2021");
+        $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
         $url = config("global.base_url") . "Course/GetCourseOutlineInSemester";
         $response = Http::withToken($token)->get($url, [
@@ -114,7 +124,7 @@ class CourseController extends Controller
 
     public function showManageClass(Request $request)
     {
-        $even = config("global.Even_2020_2021");
+        $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
         $username = $request->session()->get("username");
         $url = config("global.base_url") . "Assistant/GetClassTransactionByAssistantUsername";
@@ -141,7 +151,7 @@ class CourseController extends Controller
     {
         // dd($_POST);
         $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
-        $even = config("global.Even_2020_2021");
+        $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
         $vid_type = $_POST["video_type"];
         $response = Http::withToken($token)->get($url, [
@@ -201,7 +211,7 @@ class CourseController extends Controller
     public function getAllCourse(Request $request)
     {
         $url = config("global.base_url") . "Course/GetCourseOutlineInSemester";
-        $even = config("global.Even_2020_2021");
+        $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
         $response = Http::withToken($token)->get($url, [
             "semesterId" => $even,
@@ -235,7 +245,7 @@ class CourseController extends Controller
 
     function getClassVideo(Request $request){
         
-        $even = config("global.Even_2020_2021");
+        $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
         $role = $request->session()->get("role");
         $uname = $request->session()->get("username");
