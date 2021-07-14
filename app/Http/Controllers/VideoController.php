@@ -65,7 +65,7 @@ class VideoController extends Controller
             'video_software_description' => $r->video_software_description,
             'course_id' => $r->course_id,
             'video_file' => $r->video_link,
-            'class_code' => $r->class_code,
+            'class_code' => trim($r->class_code),
             'video_type' => 'record'
         ]);
 

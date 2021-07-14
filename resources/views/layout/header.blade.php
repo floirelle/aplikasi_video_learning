@@ -7,6 +7,8 @@
                 @if (session()->has('name')){{ session()->get('name') }}
                 @else No Name
                 @endif
+                |
+                {{ session()->get('semester_name') }}
             </span>
         </div>
         <div class="container-fluid" style="padding: 1%">

@@ -29,15 +29,17 @@ class UserController extends Controller
         $user->access_token = $token;
         $user->save();
     }
-    private function getCurrentSemester(Request $request,String $token){
-        $base_url = config('global.base_url')."Schedule/GetSemesters";
+    private function getCurrentSemester(Request $request, String $token)
+    {
+        $base_url = config('global.base_url') . "Schedule/GetSemesters";
         $response = Http::withToken($token)->get($base_url);
         $request->session()->put('semester_id', $response->json()[0]["SemesterId"]);
+        $request->session()->put('semester_name', $response->json()[0]["Description"]);
         // dd($response->json()[0]["SemesterId"]);
     }
     public function login(Request $request)
     {
-        
+
         $base_url = config('global.base_url');
         $url =  $base_url . "Account/LogOn";
         $username = $request->get('user');
@@ -75,7 +77,7 @@ class UserController extends Controller
                 "initial" => $username,
                 "generation" => substr($username, 2)
             ]);
-            
+
             $name = $newResponse->json()[0]["Name"];
         }
 

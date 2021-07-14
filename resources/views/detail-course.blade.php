@@ -1,9 +1,9 @@
 @extends('layout.master')
 @section('title', 'Detail Course')
 @section('content')
-    
-    <h3>{{ $course->course_name }}  {{$course->course_class == "" ? "" : ' - '.$course->course_class}} </h3>
-    <p>{!!$course->course_description!!}</p>
+
+    <h3>{{ $course->course_name }} {{ $course->course_class == '' ? '' : ' - ' . $course->course_class }} </h3>
+    <p>{!! $course->course_description !!}</p>
     <div class="d-flex align-items-start">
         <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"
             style="width: 15%; background-color: #285185; padding: 1%">
@@ -32,10 +32,28 @@
                                     aria-selected="true">Video
                                     {{ $loop->index + 1 }}</button>
                             @endforeach
-                            <a href="{{ url('/add-video', ['session_id' => $session->session_id]) }}">
-                                <button class="nav-link" type="button"> Add New
+                            {{-- <a href="{{ url('/add-video', ['session_id' => $session->session_id]) }}">
+                                <button class="nav-link" type="button"> Add Nw
                                     Video</button>
-                            </a>
+                            </a> --}}
+                            @if ($course->course_class == '')
+                                <form action="/add-video" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="session_name" value="{{ $session->session_name }}">
+                                    <input type="hidden" name="course_id" value="{{ $course->course_id }}">
+                                    <input type="hidden" name="course_name" value="{{ $course->course_name }}">
+                                    <button class="nav-link">Add Video</button>
+                                </form>
+                            @else
+                                <form action="/add-record" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="session_name" value="{{ $session->session_name }}">
+                                    <input type="hidden" name="course_id" value="{{ $course->course_id }}">
+                                    <input type="hidden" name="course_name" value="{{ $course->course_name }}">
+                                    <input type="hidden" name="class_code" value="{{ $course->course_class }}">
+                                    <button class="nav-link">Add Video</button>
+                                </form>
+                            @endif
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -48,7 +66,11 @@
                                     <p class="text-uppercase">Topic : </p>
                                     <p class="fs-6 fw-normal"> {{ $video->video_title }}</p>
                                     <p class="text-uppercase">Software used : </p>
-                                    <p class="fs-6 fw-normal"> {{ $video->video_software_description }}</p>
+                                    <div style="display: flex; justify-content: space-between">
+                                        <p class="fs-6 fw-normal"> {{ $video->video_software_description }}</p>
+
+                                        <button class="btn btn-outline-light btn-sm">Add to Playlist</button>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach

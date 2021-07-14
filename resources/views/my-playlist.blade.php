@@ -2,22 +2,6 @@
 @section('title', 'My Playlist')
 @section('content')
     <h1>My Playlist</h1>
-    <form action="/add-record" method="POST">
-        @csrf
-        <input type="hidden" name="session_name" value="1">
-        <input type="hidden" name="course_id" value="965b6b1a-e431-e611-903a-d8d385fce79e">
-        <input type="hidden" name="course_name" value="COMP6047-Algorithm and Programming">
-        <input type="hidden" name="class_code" value="B001">
-        <button>AddRecord</button>
-    </form>
-
-    <form action="/add-video" method="POST">
-        @csrf
-        <input type="hidden" name="session_name" value="1">
-        <input type="hidden" name="course_id" value="965b6b1a-e431-e611-903a-d8d385fce79e">
-        <input type="hidden" name="course_name" value="COMP6047-Algorithm and Programming">
-        <button>AddVBL</button>
-    </form>
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach ($playlists as $playlist)
             <div class="col">
