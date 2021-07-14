@@ -27,8 +27,7 @@ Route::get('/learning-video', 'CourseController@showLearningVideo');
 // Route::post('/learning-video', 'CourseController@filterCourse');
 Route::get('/class-video', 'CourseController@getClassVideo');
 
-Route::get('/my-playlist', 'PlaylistController@index')->name('my-playlist');
-Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
+
 
 // Route::get('/manage-learning-video', 'CourseController@showManageLearning')->name('manage-learning-video');
 // Route::get('/add-course', function () {
@@ -51,7 +50,7 @@ Route::post("/logout", 'UserController@logout');
 // Route::get("/test", "CourseController@getAllCourse");
 Route::post("/getsessions", "CourseController@getCourseSession");
 
-Route::group(["middleware"=>"rolemiddleware:Assistant"],function(){
+Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
     Route::post('/add-video', 'VideoController@showAddVideo');
     Route::post('/insert-video', 'VideoController@insertVideo');
     Route::get('/edit-video/{video_id}', 'VideoController@showDetailVideo');
@@ -65,4 +64,11 @@ Route::group(["middleware"=>"rolemiddleware:Assistant"],function(){
     Route::get('/manage-class-video', 'CourseController@showManageClass')->name('manage-class-video');
     Route::get('/manage-learning-video', 'CourseController@showManageLearning')->name('manage-learning-video');
     Route::post('/learning-video', 'CourseController@filterCourse');
+
+    Route::post('/add-playlist', 'PlaylistController@addPlaylist');
+});
+
+Route::group(["middleware" => "rolemiddleware:Student"], function () {
+    Route::get('/my-playlist', 'PlaylistController@index')->name('my-playlist');
+    Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
 });

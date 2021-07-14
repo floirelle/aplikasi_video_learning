@@ -9,6 +9,11 @@ class Playlist extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'nim',
+        'video_id'
+    ];
+
     public function video()
     {
         return $this->belongsTo('App\Models\Video', 'video_id');

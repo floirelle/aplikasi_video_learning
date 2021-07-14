@@ -36,7 +36,7 @@
                                 <button class="nav-link" type="button"> Add Nw
                                     Video</button>
                             </a> --}}
-                            @if(session()->get("role") == "Assistant")
+                            @if (session()->get('role') == 'Assistant')
                                 @if ($course->course_class == '')
                                     <form action="/add-video" method="POST">
                                         @csrf
@@ -71,7 +71,13 @@
                                     <div style="display: flex; justify-content: space-between">
                                         <p class="fs-6 fw-normal"> {{ $video->video_software_description }}</p>
 
-                                        <button class="btn btn-outline-light btn-sm">Add to Playlist</button>
+                                        <form action="/add-playlist" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="course_id" id="course_id"
+                                                value="{{ $course->course_id }}">
+                                            <input type="hidden" name="video_id" value="{{ $video->video_id }}">
+                                            <button class="btn btn-outline-light btn-sm">Add to Playlist</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

@@ -11,7 +11,6 @@ class PlaylistController extends Controller
     {
         $nim = $request->session()->get("username");
         $playlists = Playlist::where('nim', $nim)->get();
-        // dd($playlists);
         return view('my-playlist')->with('playlists', $playlists);
     }
 
@@ -19,5 +18,16 @@ class PlaylistController extends Controller
     {
         Playlist::where(['nim' => $r->nim, 'video_id' => $r->video_id])->delete();
         return redirect()->route('my-playlist', ['nim' => $r->nim]);
+    }
+
+    public function addPlaylist(Request $r)
+    {
+        // dd('hhh');
+        $nim = $r->session()->get("username");
+        Playlist::create([
+            'nim' => $nim,
+            'video_id' => $r->video_id
+        ]);
+        return back()->withInput();
     }
 }
