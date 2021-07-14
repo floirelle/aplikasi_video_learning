@@ -78,7 +78,13 @@ class CourseController extends Controller
         $token = $request->session()->get("token");
         $class = $_POST["class"];
         // $courses = [];
-        $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
+        $url = "";
+        if($request->session()->get("role") == "Student"){
+            $url = config("global.base_url") . "Binusmaya/GetCourseOutlineDetail";
+        }
+        else {
+            $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
+        }
         $response = Http::withToken($token)->get($url, [
             "courseOutlineId" => $id,
         ]);
@@ -107,7 +113,13 @@ class CourseController extends Controller
     {
         $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
-        $url = config("global.base_url") . "Course/GetCourseOutlineInSemester";
+        $url = "";
+        if($request->session()->get("role") == "Student"){
+            $url = config("global.base_url") . "Binusmaya/GetCourseOutlineDetail";
+        }
+        else {
+            $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
+        }
         $response = Http::withToken($token)->get($url, [
             "semesterId" => $even,
         ]);
@@ -150,7 +162,13 @@ class CourseController extends Controller
     public function showDetailCourse(Request $request)
     {
         // dd($_POST);
-        $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
+        $url = "";
+        if($request->session()->get("role") == "Student"){
+            $url = config("global.base_url") . "Binusmaya/GetCourseOutlineDetail";
+        }
+        else {
+            $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
+        }
         $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
         $vid_type = $_POST["video_type"];
@@ -218,7 +236,13 @@ class CourseController extends Controller
         ]);
         $courses = $response->collect();
         foreach ($courses as $course) {
-            $newUrl = config("global.base_url") . "Course/GetCourseOutlineDetail";
+            $newUrl = "";
+            if($request->session()->get("role") == "Student"){
+                $newUrl = config("global.base_url") . "Binusmaya/GetCourseOutlineDetail";
+            }
+            else {
+                $newUrl = config("global.base_url") . "Course/GetCourseOutlineDetail";
+            }
             $courseOutlineId = $course["CourseOutlineId"];
             $newResponse = Http::withToken($token)->get($newUrl, [
                 "courseOutlineId" => $courseOutlineId

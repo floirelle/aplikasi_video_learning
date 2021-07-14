@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 
 class PlaylistController extends Controller
 {
-    public function index($nim)
+    public function index(Request $request)
     {
+        $nim = $request->session()->get("username");
         $playlists = Playlist::where('nim', $nim)->get();
         // dd($playlists);
         return view('my-playlist')->with('playlists', $playlists);

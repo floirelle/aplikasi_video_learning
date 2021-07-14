@@ -26,7 +26,7 @@ Route::get('/learning-video', 'CourseController@showLearningVideo');
 Route::post('/learning-video', 'CourseController@filterCourse');
 Route::get('/class-video', 'CourseController@getClassVideo');
 
-Route::get('/my-playlist/{nim}', 'PlaylistController@index')->name('my-playlist');
+Route::get('/my-playlist', 'PlaylistController@index')->name('my-playlist');
 Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
 
 Route::get('/manage-learning-video', 'CourseController@showManageLearning')->name('manage-learning-video');
