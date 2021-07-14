@@ -32,6 +32,7 @@
                         <a class="nav-link {{ request()->is('my-playlist') ? 'active' : '' }}" aria-current="page"
                             href="{{ url('/my-playlist') }}">My Playlist Video</a>
                     </li>
+                    @if(session()->get("role")=="Assistant")
                     <li class="nav-item c-nav-item">
                         <a class="nav-link {{ request()->is('manage-learning-video') ? 'active' : '' }}"
                             aria-current="page" href="{{ url('/manage-learning-video') }}">Manage Learning Video</a>
@@ -40,6 +41,7 @@
                         <a class="nav-link {{ request()->is('manage-class-video') ? 'active' : '' }}"
                             aria-current="page" href="{{ url('/manage-class-video') }}">Manage Class Video</a>
                     </li>
+                    @endif
                 </ul>
                 <form class=" d-flex" method="POST" action="logout">
                     @CSRF

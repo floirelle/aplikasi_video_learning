@@ -36,23 +36,25 @@
                                 <button class="nav-link" type="button"> Add Nw
                                     Video</button>
                             </a> --}}
-                            @if ($course->course_class == '')
-                                <form action="/add-video" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="session_name" value="{{ $session->session_name }}">
-                                    <input type="hidden" name="course_id" value="{{ $course->course_id }}">
-                                    <input type="hidden" name="course_name" value="{{ $course->course_name }}">
-                                    <button class="nav-link">Add Video</button>
-                                </form>
-                            @else
-                                <form action="/add-record" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="session_name" value="{{ $session->session_name }}">
-                                    <input type="hidden" name="course_id" value="{{ $course->course_id }}">
-                                    <input type="hidden" name="course_name" value="{{ $course->course_name }}">
-                                    <input type="hidden" name="class_code" value="{{ $course->course_class }}">
-                                    <button class="nav-link">Add Video</button>
-                                </form>
+                            @if(session()->get("role") == "Assistant")
+                                @if ($course->course_class == '')
+                                    <form action="/add-video" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="session_name" value="{{ $session->session_name }}">
+                                        <input type="hidden" name="course_id" value="{{ $course->course_id }}">
+                                        <input type="hidden" name="course_name" value="{{ $course->course_name }}">
+                                        <button class="nav-link">Add Video</button>
+                                    </form>
+                                @else
+                                    <form action="/add-record" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="session_name" value="{{ $session->session_name }}">
+                                        <input type="hidden" name="course_id" value="{{ $course->course_id }}">
+                                        <input type="hidden" name="course_name" value="{{ $course->course_name }}">
+                                        <input type="hidden" name="class_code" value="{{ $course->course_class }}">
+                                        <button class="nav-link">Add Video</button>
+                                    </form>
+                                @endif
                             @endif
                         </div>
                     </nav>
