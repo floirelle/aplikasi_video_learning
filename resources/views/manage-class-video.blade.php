@@ -77,6 +77,7 @@
             method: "post"
         }).then(function(data) {
             // console.log(data)
+            
             var ht = "";
             for (var dt in data) {
                 if (dt == 0) {

@@ -113,13 +113,13 @@ class CourseController extends Controller
     {
         $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
-        $url = "";
-        if($request->session()->get("role") == "Student"){
-            $url = config("global.base_url") . "Binusmaya/GetCourseOutlineDetail";
-        }
-        else {
-            $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
-        }
+        $url = config("global.base_url") . "Course/GetCourseOutlineInSemester";;
+        // if($request->session()->get("role") == "Student"){
+        //     $url = config("global.base_url") . "Binusmaya/GetCourseOutlineDetail";
+        // }
+        // else {
+        //     $url = config("global.base_url") . "Course/GetCourseOutlineDetail";
+        // }
         $response = Http::withToken($token)->get($url, [
             "semesterId" => $even,
         ]);
@@ -130,7 +130,7 @@ class CourseController extends Controller
             $course->course_name = $c["Name"];
             array_push($allCourse, $course);
         }
-
+        // dd($response->collect() );
         return view('manage-learning-video')->with('courses', $allCourse);
     }
 

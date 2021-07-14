@@ -38,21 +38,21 @@
                             </a> --}}
                             @if (session()->get('role') == 'Assistant')
                                 @if ($course->course_class == '')
-                                    <form action="/add-video" method="POST">
+                                    <form action="/add-video" method="POST" >
                                         @csrf
                                         <input type="hidden" name="session_name" value="{{ $session->session_name }}">
                                         <input type="hidden" name="course_id" value="{{ $course->course_id }}">
                                         <input type="hidden" name="course_name" value="{{ $course->course_name }}">
-                                        <button class="nav-link">Add Video</button>
+                                        <button class="nav-link" >Add Video</button>
                                     </form>
                                 @else
-                                    <form action="/add-record" method="POST">
+                                    <form action="/add-record" method="POST" >
                                         @csrf
                                         <input type="hidden" name="session_name" value="{{ $session->session_name }}">
                                         <input type="hidden" name="course_id" value="{{ $course->course_id }}">
                                         <input type="hidden" name="course_name" value="{{ $course->course_name }}">
                                         <input type="hidden" name="class_code" value="{{ $course->course_class }}">
-                                        <button class="nav-link">Add Video</button>
+                                        <button class="nav-link" >Add Video</button>
                                     </form>
                                 @endif
                             @endif
@@ -71,13 +71,8 @@
                                     <div style="display: flex; justify-content: space-between">
                                         <p class="fs-6 fw-normal"> {{ $video->video_software_description }}</p>
 
-                                        <form action="/add-playlist" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="course_id" id="course_id"
-                                                value="{{ $course->course_id }}">
-                                            <input type="hidden" name="video_id" value="{{ $video->video_id }}">
-                                            <button class="btn btn-outline-light btn-sm">Add to Playlist</button>
-                                        </form>
+                                        <button class="btn btn-outline-light btn-sm" id="playlist-btn" onclick="addOrRemovePlaylist(this)">Add to Playlist</button>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -88,3 +83,95 @@
         </div>
     </div>
 @endsection
+
+<script>
+    window.onload = function() {
+        var video_id = '{{$video->video_id}}';
+        
+        $.ajax({
+            url: "{{ url('get-video-status') }}",
+            data: {
+                video_id: video_id,
+                _token: '{!! csrf_token() !!}',
+            },
+            method: "post"
+            }).then(function(data){
+       
+                if(data != "")
+                {
+                    document.getElementById("playlist-btn").innerHTML="Remove from Playlist"
+                }
+                else{
+                    document.getElementById("playlist-btn").innerHTML="Add to Playlist"
+                }
+
+            })
+    };
+    function addOrRemovePlaylist(event){
+        var video_id = '{{$video->video_id}}'
+        console.log(video_id)
+        document.getElementById("playlist-btn").disabled=true;
+        if(event.innerHTML.split(" ")[0] == "Add")
+        {
+            
+            // add to playlist
+            $.ajax({
+            url: "{{ url('add-playlist') }}",
+            data: {
+                video_id: video_id,
+                _token: '{!! csrf_token() !!}',
+            },
+            method: "post"
+            }).then(function(){
+                addNotif("Successfully Inserted to Playlist")
+                event.innerHTML = "Remove from Playlist"
+
+            })
+        }
+        else{
+            
+            $.ajax({
+            url: "{{ url('delete-playlist') }}",
+            data: {
+                video_id: video_id,
+                _token: '{!! csrf_token() !!}',
+            },
+            method: "post"
+            }).then(function(){
+                addNotif("Successfully Removed from Playlist")
+                event.innerHTML = "Add to Playlist"
+            })
+        }
+        
+    }
+    
+    function addNotif(msg){
+        var container = document.createElement("div");
+        container.classList.add("notification-container");
+        var p = document.createElement("p");
+        p.classList.add("notification-message");
+        p.innerHTML=msg;
+        container.appendChild(p);
+        container.style.right = '-20vw';
+        $("body").append(container);
+        $(".notification-container").animate({
+            right:"0"
+        },{
+            duration:500,
+            complete:function(){
+                setTimeout(function(){
+                    $(".notification-container").animate({
+                        right:"-20vw"
+                    },{
+                        duration:500,
+                        complete:function(){
+                            $(".notification-container").remove()
+                            document.getElementById("playlist-btn").disabled=false;
+                        }
+                    })
+                },1000)
+            }
+        })
+    }
+    
+</script>

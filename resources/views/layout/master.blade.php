@@ -24,6 +24,25 @@
     </script>
 
     <style>
+        .notification-container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            bottom: 5vh;
+            
+            z-index: 5;
+            background-color: red;
+            width: 20vw;
+            height: 12vh;
+            position: fixed;
+             
+            border-radius: 5px;
+        }
+        .notification-message{
+            color: white;
+            
+            font-size: 1.3em;
+        }
         .navbar {
             padding-top: 0;
             padding-bottom: 0;

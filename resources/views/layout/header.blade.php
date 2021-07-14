@@ -1,5 +1,5 @@
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="display: block; background-color: #285185;">
+<header >
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="display: block; background-color: #285185; z-index:1;">
         <div style="padding: 1%; background-color: #FFC107; display: flex; " class="header-container">
             <a href="{{ url('learning-video') }}"><img src=" {{ asset('logo.png') }}" alt=""
                     style="width: 90px; height: 50px; margin-left: 10px"></a>
