@@ -1,16 +1,17 @@
 @extends('layout.master')
-@section('title', 'Insert New Course')
+@section('title', 'Insert New Record Video')
 @section('content')
     <div class="container">
         <div class="row" style="padding: 2%">
             <div class="login-form bg-light p-4">
-                <form class="row g-3" action="/insert-video" method="POST" enctype="multipart/form-data">
+                <form class="row g-3" action="{{ url('insert-record') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="session_name" value="{{ $session_name }}">
                     <input type="hidden" name="course_id" value="{{ $course_id }}">
                     <input type="hidden" id="video_link" name="video_link">
-                    <input type="hidden" id="folder" value="{{ $course_name }}/VBL">
-                    <h4 style="color: #285185">Insert New VBL Video</h4>
+                    <input type="hidden" id="folder" value="{{ $course_name }}/record/{{ $class_code }}">
+                    <input type="hidden" name="class_code" value="{{ $class_code }}">
+                    <h4 style="color: #285185">Insert New Recording Video</h4>
                     <div class="col-12">
                         @if ($errors->any())
                             <div class="alert alert-warning" role="alert">
@@ -23,13 +24,6 @@
                             <input type="text" class="form-control" id="video_title" name="video_title"
                                 value="{{ old('video_title') }}" placeholder="Video Title">
                             <label for="video_title">Video Title</label>
-                        </div>
-
-                        {{-- Video Maker --}}
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="video_maker" name="video_maker"
-                                value="{{ old('video_maker') }}" placeholder="Video Maker">
-                            <label for="video_maker">Video Maker</label>
                         </div>
 
                         {{-- Video Software Description --}}
@@ -51,7 +45,7 @@
                         </div>
 
                         {{-- Upload Video --}}
-                        <button class="btn btn-warning float-end" id="send" disabled>Add</button>
+                        <button class="btn btn-warning float-end" id="send" type="submit" disabled>Add</button>
                     </div>
                 </form>
             </div>
@@ -61,7 +55,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
     <!-- TODO: Add SDKs for Firebase products that you want to use
-                                                                                                                                                                                                                                                    https://firebase.google.com/docs/web/setup#available-libraries -->
+                                                                                                                                                                                                                                                                                                                                                        https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
 
     <script>

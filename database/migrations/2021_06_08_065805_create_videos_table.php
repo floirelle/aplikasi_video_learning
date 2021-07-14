@@ -17,7 +17,7 @@ class CreateVideosTable extends Migration
             $table->id('video_id');
             $table->string('session_name');
             $table->string('video_type');
-            $table->string('class_code');
+            $table->string('class_code')->nullable();
             $table->string('course_id');
             $table->string('video_title');
             $table->string('video_software_description');

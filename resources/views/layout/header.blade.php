@@ -1,11 +1,13 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="display: block; background-color: #285185;">
-        <div style="padding: 1%; background-color: #FFC107; display: flex; "class="header-container">
+        <div style="padding: 1%; background-color: #FFC107; display: flex; " class="header-container">
             <a href="{{ url('learning-video') }}"><img src=" {{ asset('logo.png') }}" alt=""
                     style="width: 90px; height: 50px; margin-left: 10px"></a>
-            <span class="header-name"> @if(session()->has("name")){{session()->get("name")}}
-            @else No Name
-        @endif</span>
+            <span class="header-name">
+                @if (session()->has('name')){{ session()->get('name') }}
+                @else No Name
+                @endif
+            </span>
         </div>
         <div class="container-fluid" style="padding: 1%">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -39,7 +41,7 @@
                 </ul>
                 <form class=" d-flex" method="POST" action="logout">
                     @CSRF
-                    <button class="btn btn-outline-light btn-sm" type="submit" >
+                    <button class="btn btn-outline-light btn-sm" type="submit">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </button>

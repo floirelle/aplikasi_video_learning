@@ -724,5 +724,15 @@ class DatabaseSeeder extends Seeder
             "video_software_description" => "Dev C++",
             "video_file" => "https://firebasestorage.googleapis.com/v0/b/learningvideoapp.appspot.com/o/COMP6048%2Fsession%2010%2F03.%20Min%20Heap%20(Part%203).m4v?alt=media&token=274631e9-ff86-4f7d-b9e5-d01a0df5ad16"
         ]);
+
+        //dummy playlist
+        DB::table('playlists')->insert([
+            "nim" => "2201759804",
+            "video_id" => 1,
+        ]);
+        DB::table('playlists')->insert([
+            "nim" => "2201759804",
+            "video_id" => 2,
+        ]);
     }
 }

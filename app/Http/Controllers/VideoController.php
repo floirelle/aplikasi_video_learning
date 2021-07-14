@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Session;
 use App\Models\Video;
 use Illuminate\Http\Request;
 
-use Kreait\Firebase\Factory;
-
 class VideoController extends Controller
 {
-    public function showAddVideo($session_id)
+    public function showAddVideo(Request $r)
     {
-        $session = Session::where('session_id', $session_id)->first();
-        return view('add-video')->with('session', $session);
+        $session_name = $r->session_name;
+        $course_id = $r->course_id;
+        $course_name = $r->course_name;
+        return view('add-video')
+            ->with('session_name', $session_name)
+            ->with('course_id', $course_id)
+            ->with('course_name', $course_name);
     }
 
     public function insertVideo(Request $r)
@@ -24,19 +26,50 @@ class VideoController extends Controller
             'video_link' => 'required',
         ]);
 
-        $session = Session::where('session_id', $r->session_id)->first();
-
         Video::create([
             'video_title' => $r->video_title,
+            'session_name' => $r->session_name,
             'video_software_description' => $r->video_software_description,
+            'course_id' => $r->course_id,
             'video_file' => $r->video_link,
-            'session_id' => $r->session_id,
             'video_type' => 'VBL'
         ]);
 
-        // $data = app('firebase.storage')->getBucket()->upload($video, ['name' => 'COMP6178/' . $nama_file]);
+        return redirect('learning-video');
+    }
 
-        return redirect()->route('view-course', ['course_code' => $session->course->course_code]);
+    public function showAddRecord(Request $r)
+    {
+        $session_name = $r->session_name;
+        $course_id = $r->course_id;
+        $course_name = $r->course_name;
+        $class_code = $r->class_code;
+        return view('add-record')
+            ->with('session_name', $session_name)
+            ->with('course_id', $course_id)
+            ->with('course_name', $course_name)
+            ->with('class_code', $class_code);
+    }
+
+    public function insertRecord(Request $r)
+    {
+        $this->validate($r, [
+            'video_title' => 'required|min:5',
+            'video_software_description' => 'required',
+            'video_link' => 'required',
+        ]);
+
+        Video::create([
+            'video_title' => $r->video_title,
+            'session_name' => $r->session_name,
+            'video_software_description' => $r->video_software_description,
+            'course_id' => $r->course_id,
+            'video_file' => $r->video_link,
+            'class_code' => $r->class_code,
+            'video_type' => 'record'
+        ]);
+
+        return redirect('manage-class-video');
     }
 
     public function showDetailVideo($video_id)
@@ -64,7 +97,7 @@ class VideoController extends Controller
             ]);
         }
         // dd($video);
-        if($video->video_type == "record")return redirect()->route('manage-class-video');
+        if ($video->video_type == "record") return redirect()->route('manage-class-video');
         return redirect()->route('manage-learning-video');
     }
 
