@@ -24,25 +24,31 @@
     </script>
 
     <style>
-        .notification-container{
+        .notification-container {
             display: flex;
             align-items: center;
             justify-content: center;
+            align-content: center;
+            align-items: center;
             bottom: 5vh;
-            
+
             z-index: 5;
-            background-color: red;
+            background-color: rgba(255, 255, 255, 0.7);
             width: 20vw;
             height: 12vh;
             position: fixed;
-             
-            border-radius: 5px;
+
+            padding: 2%;
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
         }
-        .notification-message{
-            color: white;
-            
-            font-size: 1.3em;
+
+        .notification-message {
+            color: black;
+
+            font-size: 1.1em;
         }
+
         .navbar {
             padding-top: 0;
             padding-bottom: 0;
@@ -106,7 +112,8 @@
             align-items: center;
 
         }
-        .loading-modal{
+
+        .loading-modal {
             position: fixed;
             width: 100vw;
             height: 100vh;
@@ -117,25 +124,28 @@
             align-items: center;
             visibility: hidden;
         }
-        .loading-modal img{
+
+        .loading-modal img {
             margin-top: 200px;
             width: 100px;
             height: 100px;
         }
-        .loading-modal p{
+
+        .loading-modal p {
             color: white;
             font-size: 2em;
-            
+
         }
+
     </style>
 
     <title>@yield('title')</title>
 </head>
 
 <body style="background-color: #CCD9E2">
-    <div class="loading-modal" >
-    <img src=" {{ asset('loading-gif.gif') }}">
-    <p class="loading-text">Loading</p>
+    <div class="loading-modal">
+        <img src=" {{ asset('loading-gif.gif') }}">
+        <p class="loading-text">Loading</p>
     </div>
     @include('layout.header')
     <div style="margin-top: 150px; padding: 1%">
