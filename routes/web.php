@@ -51,7 +51,7 @@ Route::post("/logout", 'UserController@logout');
 // Route::get("/test", "CourseController@getAllCourse");
 Route::post("/getsessions", "CourseController@getCourseSession");
 
-Route::group(["middleware"=>"rolemiddleware:Admin"],function(){
+Route::group(["middleware" => "rolemiddleware:Admin"], function () {
     Route::get('/manage-learning-video', 'CourseController@showManageLearning')->name('manage-learning-video');
     Route::post('/add-video', 'VideoController@showAddVideo');
     Route::post('/insert-video', 'VideoController@insertVideo');
@@ -72,20 +72,22 @@ Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
         return view('add-course');
     });
     Route::get('/manage-class-video', 'CourseController@showManageClass')->name('manage-class-video');
-    
+
     Route::post('/learning-video', 'CourseController@filterCourse');
-    
+
     //sementara
-    Route::post("/get-video-status","PlaylistController@getPlaylistVideoStatus");
-    
+    // Route::post("/get-video-status","PlaylistController@getPlaylistVideoStatus");
+
 });
 
-Route::post('/add-playlist', 'PlaylistController@addPlaylist');
-Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
-Route::post('/delete-from-playlist', 'PlaylistController@deleteFromPlaylist');
+// sementara
+// Route::post('/add-playlist', 'PlaylistController@addPlaylist');
+// Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
+// Route::post('/delete-from-playlist', 'PlaylistController@deleteFromPlaylist');
 Route::group(["middleware" => "rolemiddleware:Student"], function () {
-    // Route::post("/get-video-status","PlaylistController@getPlaylistVideoStatus");   
+    Route::post("/get-video-status", "PlaylistController@getPlaylistVideoStatus");
     Route::get('/my-playlist', 'PlaylistController@index')->name('my-playlist');
-    // Route::post('/add-playlist', 'PlaylistController@addPlaylist');
-    // Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
+    Route::post('/add-playlist', 'PlaylistController@addPlaylist');
+    Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
+    Route::post('/delete-from-playlist', 'PlaylistController@deleteFromPlaylist');
 });
