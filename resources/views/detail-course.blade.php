@@ -12,34 +12,45 @@
             style="width: 15%; background-color: #285185; padding: 1%">
             @foreach ($sessions as $session)
                 <button class="nav-link {{ $loop->index + 1 == 1 ? 'active' : '' }}"
-                    id="v-pills-{{ $loop->index + 1 }}-tab" data-bs-toggle="pill"
-                    data-bs-target="#v-pills-{{ $loop->index + 1 }}" type="button" role="tab"
-                    aria-controls="v-pills-{{ $loop->index + 1 }}" aria-selected="true">Session
+                    id="v-pills-{{ $loop->index + 1 }}-tab" 
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-pills-{{ $loop->index + 1 }}" 
+                    type="button" role="tab"
+                    aria-controls="v-pills-{{ $loop->index + 1 }}" aria-selected="true"
+                    onclick="checkForStatusSession('{{ $loop->index + 1 }}')"
+                    >Session
                     {{ $session->session_name }}</button>
             @endforeach
         </div>
         <div class="tab-content" id="v-pills-tabContent" style="width: 100%">
             @foreach ($sessions as $session)
+                
                 <div class="tab-pane fade {{ $loop->index + 1 == 1 ? 'active show' : '' }}"
                     style="background-color: #285185;padding: 1%" id="v-pills-{{ $loop->index + 1 }}" role="tabpanel"
                     aria-labelledby="v-pills-{{ $loop->index + 1 }}-tab">
+                    
+                @if(sizeof($session->videos)==0)
+                    @if ((session()->get("role")=="Student") || (session()->get("role") == "Assistant" && $video_type=="vbl") || (session()->get("role") == "Admin" && $video_type == "Record"))
+                    <h5 class="text-warning">No Video in this session </h5>
+                    @endif
+                @endif
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist" style="border-color: #FFC107">
 
                             @foreach ($session->videos as $vid)
+                                
                                 <button class="nav-link {{ $loop->index + 1 == 1 ? 'active' : '' }}"
-                                    id="nav-{{ $session->session_name }}{{ $loop->index + 1 }}-tab"
+                                    id="nav-{{$vid->video_id}}-tab"
                                     data-bs-toggle="tab"
-                                    data-bs-target="#nav-{{ $session->session_name }}{{ $loop->index + 1 }}"
+                                    data-bs-target="#nav-{{$vid->video_id}}"
                                     type="button" role="tab"
-                                    aria-controls="nav-{{ $session->session_name }}{{ $loop->index + 1 }}"
-                                    aria-selected="true">Video
+                                    aria-controls="nav-{{$vid->video_id}}"
+                                    aria-selected="true"
+                                    onclick="checkForStatus('{{$vid->video_id}}')"
+                                    >Video
                                     {{ $loop->index + 1 }}</button>
                             @endforeach
-                            {{-- <a href="{{ url('/add-video', ['session_id' => $session->session_id]) }}">
-                                <button class="nav-link" type="button"> Add Nw
-                                    Video</button>
-                            </a> --}}
+                            
                             @if (session()->get('role') == 'Admin')
                                 @if ($course->course_class == '')
                                     <form action="/add-video" method="POST" class="nav nav-tabs" style="border: none">
@@ -67,8 +78,8 @@
                     <div class="tab-content" id="nav-tabContent">
                         @foreach ($session->videos as $vid)
                             <div class="tab-pane fade {{ $loop->index + 1 == 1 ? 'active show' : '' }}"
-                                id="nav-{{ $session->session_name }}{{ $loop->index + 1 }}" role="tabpanel"
-                                aria-labelledby="nav-{{ $session->session_name }}{{ $loop->index + 1 }}-tab">
+                                id="nav-{{$vid->video_id}}" role="tabpanel"
+                                aria-labelledby="nav-{{$vid->video_id}}-tab">
                                 <div style="margin-top: 1%; color: white">
                                     <video src="{{ $vid->video_file }}" width="65%" controls></video>
                                     <p class="text-uppercase">Topic : </p>
@@ -77,8 +88,8 @@
                                     <div style="display: flex; justify-content: space-between">
                                         <p class="fs-6 fw-normal"> {{ $vid->video_software_description }}</p>
                                         @if (session()->get('role') == 'Student')
-                                            <button class="btn btn-outline-light btn-sm" id="playlist-btn"
-                                                onclick="addOrRemovePlaylist(this)">Add to Playlist</button>
+                                            <button class="btn btn-outline-light btn-sm" id="playlist-btn-{{$vid->video_id}}"
+                                                onclick="addOrRemovePlaylist(this,'{{$vid->video_id}}')">Add to Playlist</button>
                                         @endif
                                     </div>
                                 </div>
@@ -92,10 +103,8 @@
 @endsection
 
 <script>
-    window.onload = function() {
 
-        var video_id = '{{ $vid->video_id }}';
-
+    function updatePlaylistBtn(video_id){
         $.ajax({
             url: "{{ url('get-video-status') }}",
             data: {
@@ -104,28 +113,41 @@
             },
             method: "post"
         }).then(function(data) {
-
-            if (data != "") {
-                if (document.getElementById("playlist-btn")) {
-                    document.getElementById("playlist-btn").innerHTML = "Remove from Playlist"
+            console.log(data)
+            if (data != 0) {
+                if (document.getElementById(`playlist-btn-${video_id}`)) {
+                    document.getElementById(`playlist-btn-${video_id}`).innerHTML = "Remove from Playlist"
                 }
 
             } else {
-                if (document.getElementById("playlist-btn")) {
-                    document.getElementById("playlist-btn").innerHTML = "Add to Playlist"
+                if (document.getElementById(`playlist-btn-${video_id}`)) {
+                    document.getElementById(`playlist-btn-${video_id}`).innerHTML = "Add to Playlist"
                 }
 
             }
 
         })
     }
+    function checkForStatusSession(session_id){
+        var video_id = $(`button.active:eq(${session_id})`).attr("id").split("-")[1];
+        updatePlaylistBtn(video_id)
+    }
+    function checkForStatus(video_id){
+        updatePlaylistBtn(video_id)
+    }
+    window.onload = function() {
+        var video_id = $("button.active:eq(1)").attr("id").split("-")[1];
+        updatePlaylistBtn(video_id)
+    }
 
 
 
-    function addOrRemovePlaylist(event) {
+    function addOrRemovePlaylist(event,video_id) {
 
-        var video_id = '{{ $vid->video_id }}'
-        document.getElementById("playlist-btn").disabled = true;
+        
+        // var video_id = '{{ $vid->video_id }}'
+        console.log(video_id)
+        document.getElementById(`playlist-btn-${video_id}`).disabled = true;
         if (event.innerHTML.split(" ")[0] == "Add") {
 
             // add to playlist
@@ -137,7 +159,7 @@
                 },
                 method: "post"
             }).then(function() {
-                addNotif("Successfully Inserted to Playlist")
+                addNotif("Successfully Inserted to Playlist",video_id)
                 event.innerHTML = "Remove from Playlist"
 
             })
@@ -152,14 +174,14 @@
                 method: "post"
             }).then(function() {
 
-                addNotif("Successfully Removed from Playlist")
+                addNotif("Successfully Removed from Playlist",video_id)
                 event.innerHTML = "Add to Playlist"
             })
         }
 
     }
 
-    function addNotif(msg) {
+    function addNotif(msg,video_id) {
         var container = document.createElement("div");
         container.classList.add("notification-container");
         var p = document.createElement("p");
@@ -180,7 +202,7 @@
                         duration: 500,
                         complete: function() {
                             $(".notification-container").remove()
-                            document.getElementById("playlist-btn").disabled = false;
+                            document.getElementById(`playlist-btn-${video_id}`).disabled = false;
                         }
                     })
                 }, 1000)

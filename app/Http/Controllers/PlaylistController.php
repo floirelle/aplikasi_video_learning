@@ -12,6 +12,7 @@ class PlaylistController extends Controller
     {
         $nim = $request->session()->get("username");
         $playlists = Playlist::where('nim', $nim)->get();
+        // dd($playlists[0]->video);
         return view('my-playlist')->with('playlists', $playlists);
     }
 
@@ -34,7 +35,7 @@ class PlaylistController extends Controller
         $nim = $r->session()->get("username");
         $vid_type="VBL";
         if($r->class_code){
-            $vid_type ="record";
+            $vid_type ="Record";
         }
         Playlist::create([
             'nim' => $nim,
@@ -51,10 +52,10 @@ class PlaylistController extends Controller
         
         $video_id = $_POST['video_id'];
         $nim = $r->session()->get("username");
-        $playlist = Playlist::where('nim',$nim)->where("video_id",$video_id)->first();
-        return $playlist;
+        $playlist = Playlist::where('nim',$nim)->where("video_id",$video_id)->get();
+        
         // return $playlist == null;
-        if($playlist == null)return 0;
+        if(sizeof($playlist)==0)return 0;
         return 1;
     }
 }

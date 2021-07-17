@@ -101,10 +101,13 @@
 
         .main-header-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: start;
             align-items: center;
         }
-
+        .main-header-container > h1{
+            margin-right: auto;
+        }
+        
         .main-header-filter {
             width: 400px;
             display: flex;
@@ -136,7 +139,13 @@
             font-size: 2em;
 
         }
-
+        .search-form{
+            display: flex;
+            column-gap: 2vw;
+        }
+        .filter-item{
+            width: 12vw;
+        }
     </style>
 
     <title>@yield('title')</title>
@@ -148,7 +157,7 @@
         <p class="loading-text">Loading</p>
     </div>
     @include('layout.header')
-    <div style="margin-top: 150px; padding: 1%">
+    <div style="margin-top: 150px; padding: 1%; min-height:68vh;">
         @yield('content')
     </div>
     @include('layout.footer')

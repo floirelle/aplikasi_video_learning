@@ -70,7 +70,7 @@
             url: "{{ url('getsessions') }}",
             data: {
                 id: id,
-                type:"record",
+                type:"Record",
                 class:class_code,
                 _token: '{!! csrf_token() !!}',
             },

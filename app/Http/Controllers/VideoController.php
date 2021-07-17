@@ -97,13 +97,13 @@ class VideoController extends Controller
             ]);
         }
         // dd($video);
-        if ($video->video_type == "record") return redirect()->route('manage-class-video');
+        if ($video->video_type == "Record") return redirect()->route('manage-class-video');
         return redirect()->route('manage-learning-video');
     }
 
     public function deleteVideo($video_id)
     {
         Video::where('video_id', $video_id)->delete();
-        return redirect()->route('manage-learning-video');
+        return back();
     }
 }

@@ -2,6 +2,9 @@
 @section('title', 'My Playlist')
 @section('content')
     <h1>My Playlist</h1>
+    @if (sizeof($playlists)==0)
+    <h5 class="text-danger">You don't have any playlist.</h5>
+    @endif
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach ($playlists as $playlist)
             <div class="col">

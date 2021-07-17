@@ -89,6 +89,7 @@ class UserController extends Controller
 
         //put username in session
         $request->session()->put('username', $username);
+        // $request->session()->put('username', "2440116486");
         $request->session()->put('role', $role);
         $request->session()->put('token', $token);
         $request->session()->put('name', $name);

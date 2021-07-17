@@ -31,16 +31,13 @@ Route::group(["middleware" => "rolemiddleware:Admin"], function () {
     Route::get('/manage-learning-video', 'CourseController@showManageLearning')->name('manage-learning-video');
     Route::post('/add-video', 'VideoController@showAddVideo');
     Route::post('/insert-video', 'VideoController@insertVideo');
-    Route::get('/edit-video/{video_id}', 'VideoController@showDetailVideo');
-    Route::post('/update-video', 'VideoController@updateVideo');
-    Route::get('/delete-video/{video_id}', 'VideoController@deleteVideo');
+
+    // Route::get('/delete-video/{video_id}', 'VideoController@deleteVideo');
 });
 
 Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
     
-    Route::get('/edit-video/{video_id}', 'VideoController@showDetailVideo');
-    Route::post('/update-video', 'VideoController@updateVideo');
-    Route::get('/delete-video/{video_id}', 'VideoController@deleteVideo');
+
     Route::post('/add-record', 'VideoController@showAddRecord');
     Route::post('/insert-record', 'VideoController@insertRecord');
     Route::get('/add-course', function () {
@@ -49,7 +46,7 @@ Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
     Route::get('/manage-class-video', 'CourseController@showManageClass')->name('manage-class-video');
 
     Route::post('/learning-video', 'CourseController@filterCourse');
-
+    // Route::get('/delete-video/{video_id}', 'VideoController@deleteVideo');
     //sementara
     // Route::post("/get-video-status","PlaylistController@getPlaylistVideoStatus");
 
@@ -59,9 +56,15 @@ Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
 // Route::post('/add-playlist', 'PlaylistController@addPlaylist');
 // Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
 // Route::post('/delete-from-playlist', 'PlaylistController@deleteFromPlaylist');
+Route::group(["middleware=>rolemiddleware:Assistant&Admin"],function(){
+    Route::get('/delete-video/{video_id}', 'VideoController@deleteVideo');
+    Route::get('/edit-video/{video_id}', 'VideoController@showDetailVideo');
+    Route::post('/update-video', 'VideoController@updateVideo');
+    
+});
 
 Route::group(["middleware"=>"logmiddleware"],function(){
-    Route::get('/learning-video', 'CourseController@showLearningVideo');
+    Route::get('/learning-video', 'CourseController@showLearningVideo')->name("learning-video");
     Route::post("/logout", 'UserController@logout');
     Route::post("/getsessions", "CourseController@getCourseSession");
     Route::post('/view-course', 'CourseController@showDetailCourse')->name('view-course');

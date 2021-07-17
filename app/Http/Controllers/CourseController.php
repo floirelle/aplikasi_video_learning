@@ -13,7 +13,25 @@ class CourseController extends Controller
 {
     public function showLearningVideo(Request $request)
     {
-
+        // ;
+        $prev_url = url()->previous();
+        $params = ["filter"=>"","search"=>""];
+        if(preg_match("/\?/",$prev_url) && preg_match("/\?/",url()->current())){
+            $oldParams = explode("?",$prev_url)[1];
+            
+            foreach(explode("&",$oldParams) as $param){
+                $p = explode("=",$param);
+                $params[$p[0]]=$p[1];
+            }
+        }
+        // dd(isset($params["a"]));
+        if(isset($_GET["search"])){
+            $params["search"] = $_GET["search"];
+        }
+        if(isset($_GET["filter"])){
+            $params["filter"] = $_GET["filter"];
+        }
+        
         $even = $request->session()->get("semester_id");
         $token = $request->session()->get("token");
         $courses = [];
@@ -33,9 +51,11 @@ class CourseController extends Controller
                 array_push($courses, $course);
             }
             return view('learning-video')
+                ->with("params",$params)
                 ->with('courses', $courses);
         } else {
-            if ($request->get("filter") != NULL && $request->get("filter") == "On") {
+            
+            if ($params["filter"] != NULL && $params["filter"]== "On") {
                 $url = config("global.base_url") . "Assistant/GetClassTransactionByAssistantUsername";
                 $response = Http::withToken($token)->get($url, [
                     "semesterId" => $even,
@@ -49,7 +69,19 @@ class CourseController extends Controller
                     $course->course_class = $c["Class"];
                     array_push($courses, $course);
                 }
-                return view('learning-video')
+                if($params["search"] && $params["search"]!=""){
+                    
+                    $searchCourse = [];
+                    foreach($courses as $c){
+                        $search_str = "/".$params["search"]."/i";
+                        if(preg_match($search_str,$c->course_name))array_push($searchCourse,$c);
+                    }
+                    // 
+                    return view('learning-video',$params)
+                    ->with('courses', $searchCourse);
+                }
+                
+                return view('learning-video',$params)
                     ->with('courses', $courses);
             } else {
                 $url = config("global.base_url") . "Course/GetCourseOutlineInSemester";
@@ -63,6 +95,19 @@ class CourseController extends Controller
                     $course->course_name = $c["Name"];
                     array_push($allCourse, $course);
                 }
+                
+                if(isset($params["search"]) && $params["search"]!=""){
+                    $searchCourse = [];
+                    foreach($allCourse as $c){
+                        $search_str = "/".$params["search"]."/i";
+                        if(preg_match($search_str,$c->course_name))array_push($searchCourse,$c);
+                    }
+                    // dd($searchCourse);
+                    return view('learning-video')
+                    ->with('courses', $searchCourse)
+                    ->with("params",$params);
+                }
+                // dd(array_search("COMP6178", array_column($allCourse, 'course_name')));
                 return view('learning-video')
                     ->with('courses', $allCourse);
             }
@@ -161,7 +206,7 @@ class CourseController extends Controller
 
     public function showDetailCourse(Request $request)
     {
-        // dd($_POST);
+        
         // dd($request);
         $url = "";
         if($request->session()->get("role") == "Student"){
@@ -200,7 +245,7 @@ class CourseController extends Controller
             }
             array_push($sessions, $session);
         }
-        return view('detail-course')->with('course', $course)->with('sessions', $sessions);
+        return view('detail-course')->with('course', $course)->with('sessions', $sessions)->with("video_type",$_POST["video_type"]);
     }
 
     public function showEditCourse($course_code)
@@ -281,14 +326,23 @@ class CourseController extends Controller
         $token = $request->session()->get("token");
         $role = $request->session()->get("role");
         $uname = $request->session()->get("username");
-        if($role == "student"){
+        if($role == "Student"){
+            // dd("ASD");
             // show based on student url
             $url = config("global.base_url") . "Student/GetStudentClassTransactionWithAssistant";
             $response = Http::withToken($token)->get($url,[
                 "nim"=>$uname,
                 "semesterID"=>$even
             ]);    
-            dd($response->json());
+            $courses = [];
+            foreach($response->json() as $resp){
+                $course = new AltCourse;
+                $course->course_id = $resp["CourseOutlineId"];
+                $course->course_name =$resp["Subject"];
+                $course->course_class = $resp["ClassName"];
+                array_push($courses,$course);
+            }
+            return view('class-video')->with("courses",$courses);
         }
         else{
             $url = config("global.base_url") . "Assistant/GetClassTransactionByAssistantUsername";
