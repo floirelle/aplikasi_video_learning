@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 class UserController extends Controller
 {
     //
-    
+
     public function getUser($username)
     {
         $user = User::where('username', 'like', $username)->first();
@@ -74,7 +74,7 @@ class UserController extends Controller
         } else {
             // login as ast
             $role = "Assistant";
-            if(in_array($username,$adminList)){
+            if (in_array($username, $adminList)) {
                 $role = "Admin";
             }
             $token = $response->json()["access_token"];
