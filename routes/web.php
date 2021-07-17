@@ -73,6 +73,7 @@ Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
 
 Route::post('/add-playlist', 'PlaylistController@addPlaylist');
 Route::post('/delete-playlist', 'PlaylistController@deletePlaylist');
+Route::post('/delete-from-playlist', 'PlaylistController@deleteFromPlaylist');
 Route::group(["middleware" => "rolemiddleware:Student"], function () {
     // Route::post("/get-video-status","PlaylistController@getPlaylistVideoStatus");   
     Route::get('/my-playlist', 'PlaylistController@index')->name('my-playlist');

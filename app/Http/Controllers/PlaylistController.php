@@ -19,7 +19,13 @@ class PlaylistController extends Controller
     {
         $nim = $r->session()->get("username");
         Playlist::where(['nim' => $nim, 'video_id' => $r->video_id])->delete();
-        return redirect()->back();
+        return back();
+    }
+
+    public function deleteFromPlaylist(Request $r)
+    {
+        $nim = $r->session()->get("username");
+        Playlist::where(['nim' => $nim, 'video_id' => $r->video_id])->delete();
     }
 
     public function addPlaylist(Request $r)

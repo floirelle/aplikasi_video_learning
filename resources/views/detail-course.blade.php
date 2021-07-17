@@ -131,13 +131,14 @@
         else{
             
             $.ajax({
-            url: "{{ url('delete-playlist') }}",
+            url: "{{ url('delete-from-playlist') }}",
             data: {
                 video_id: video_id,
                 _token: '{!! csrf_token() !!}',
             },
             method: "post"
             }).then(function(){
+                
                 addNotif("Successfully Removed from Playlist")
                 event.innerHTML = "Add to Playlist"
             })
