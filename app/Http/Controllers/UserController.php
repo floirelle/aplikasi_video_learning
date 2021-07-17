@@ -107,12 +107,13 @@ class UserController extends Controller
         //     $newUser->access_token = $token;
         //     $newUser->save();
         // }
-
+        // dd($request->session());
         return redirect('learning-video');
     }
 
     public function logout(Request $request)
     {
+        // dd(explode(",","Student,Assistant"));
         $request->session()->flush();
         return redirect("login");
     }
