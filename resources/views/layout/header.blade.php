@@ -1,5 +1,5 @@
 <header >
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="display: block; background-color: #285185; z-index:1;">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="display: block; background-color: #285185; z-index:2;">
         <div style="padding: 1%; background-color: #FFC107; display: flex; " class="header-container">
             <a href="{{ url('learning-video') }}"><img src=" {{ asset('logo.png') }}" alt=""
                     style="width: 90px; height: 50px; margin-left: 10px"></a>
@@ -24,16 +24,20 @@
                             href="{{ url('/learning-video') }}">Learning
                             Video</a>
                     </li>
+                    @if(session()->get("role") !="Admin")
                     <li class="nav-item c-nav-item">
                         <a class="nav-link {{ request()->is('class-video') ? 'active' : '' }}" aria-current="page"
                             href="{{ url('/class-video') }}">Class Video</a>
                     </li>
-                    @if (session()->get('role') == 'Assistant')
+                    @endif
+                    @if(session()->get("role") == "Admin")
                         <li class="nav-item c-nav-item">
-                            <a class="nav-link {{ request()->is('manage-learning-video') ? 'active' : '' }}"
-                                aria-current="page" href="{{ url('/manage-learning-video') }}">Manage Learning
-                                Video</a>
+                                <a class="nav-link {{ request()->is('manage-learning-video') ? 'active' : '' }}"
+                                    aria-current="page" href="{{ url('/manage-learning-video') }}">Manage Learning
+                                    Video</a>
                         </li>
+                    @elseif (session()->get('role') == 'Assistant')
+                        
                         <li class="nav-item c-nav-item">
                             <a class="nav-link {{ request()->is('manage-class-video') ? 'active' : '' }}"
                                 aria-current="page" href="{{ url('/manage-class-video') }}">Manage Class Video</a>

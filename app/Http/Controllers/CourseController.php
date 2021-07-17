@@ -162,6 +162,7 @@ class CourseController extends Controller
     public function showDetailCourse(Request $request)
     {
         // dd($_POST);
+        // dd($request);
         $url = "";
         if($request->session()->get("role") == "Student"){
             $url = config("global.base_url") . "Binusmaya/GetCourseOutlineDetail";
@@ -185,11 +186,18 @@ class CourseController extends Controller
         }
         $course->course_description = $resp["CourseDescription"];
         $sessions = [];
+        
         foreach ($resp["Laboratory"] as $s) {
             $session = new Session;
             $session->session_name = $s["Session"];
             $session->topic = $s["Topics"];
-            $session->videos = Video::where(['session_name' => $s["Session"], 'video_type' => $vid_type, 'course_id' => $resp["Id"]])->get();
+            if($request->course_class=="")
+            {
+                $session->videos = Video::where(['session_name' => $s["Session"], 'video_type' => $vid_type, 'course_id' => $resp["Id"]])->get();
+            }
+            else{
+                $session->videos = Video::where(['session_name' => $s["Session"], 'video_type' => $vid_type, 'course_id' => $resp["Id"], 'class_code' =>$request->course_class])->get();
+            }
             array_push($sessions, $session);
         }
         return view('detail-course')->with('course', $course)->with('sessions', $sessions);

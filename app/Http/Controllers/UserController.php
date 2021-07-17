@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 class UserController extends Controller
 {
     //
-
+    
     public function getUser($username)
     {
         $user = User::where('username', 'like', $username)->first();
@@ -39,7 +39,10 @@ class UserController extends Controller
     }
     public function login(Request $request)
     {
-
+        $adminList = [
+            // "at20-1",
+            "dy20-1"
+        ];
         $base_url = config('global.base_url');
         $url =  $base_url . "Account/LogOn";
         $username = $request->get('user');
@@ -71,6 +74,9 @@ class UserController extends Controller
         } else {
             // login as ast
             $role = "Assistant";
+            if(in_array($username,$adminList)){
+                $role = "Admin";
+            }
             $token = $response->json()["access_token"];
             $new_url = $base_url . "Assistant";
             $newResponse = Http::get($new_url, [

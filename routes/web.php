@@ -51,6 +51,15 @@ Route::post("/logout", 'UserController@logout');
 // Route::get("/test", "CourseController@getAllCourse");
 Route::post("/getsessions", "CourseController@getCourseSession");
 
+Route::group(["middleware"=>"rolemiddleware:Admin"],function(){
+    Route::get('/manage-learning-video', 'CourseController@showManageLearning')->name('manage-learning-video');
+    Route::post('/add-video', 'VideoController@showAddVideo');
+    Route::post('/insert-video', 'VideoController@insertVideo');
+    Route::get('/edit-video/{video_id}', 'VideoController@showDetailVideo');
+    Route::post('/update-video', 'VideoController@updateVideo');
+    Route::get('/delete-video/{video_id}', 'VideoController@deleteVideo');
+});
+
 Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
     Route::post('/add-video', 'VideoController@showAddVideo');
     Route::post('/insert-video', 'VideoController@insertVideo');
@@ -63,7 +72,7 @@ Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
         return view('add-course');
     });
     Route::get('/manage-class-video', 'CourseController@showManageClass')->name('manage-class-video');
-    Route::get('/manage-learning-video', 'CourseController@showManageLearning')->name('manage-learning-video');
+    
     Route::post('/learning-video', 'CourseController@filterCourse');
     
     //sementara

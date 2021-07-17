@@ -2,13 +2,13 @@
 @section('title', 'Manage Class Video')
 @section('content')
     <h1>Manage Class Video</h1>
-    <div class="accordion" id="accordionExample" style="margin-top: 20px">
+    <div class="accordion" id="accordionItem" style="margin-top: 20px">
         @foreach ($courses as $course)
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading{{ $loop->index + 1 }}">
 
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse{{ $loop->index + 1 }}" aria-expanded="true"
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse{{ $loop->index + 1 }}" aria-expanded="false"
                         aria-controls="collapse{{ $loop->index + 1 }}"
                         onclick="getsessions('{{ $course->course_id }}','{{ $loop->index }}','{{$course->course_class}}')">
                         {{ $course->course_name }} - {{$course->course_class}}
@@ -16,7 +16,7 @@
 
                 </h2>
                 <div id="collapse{{ $loop->index + 1 }}" class="accordion-collapse collapse"
-                    aria-labelledby="heading{{ $loop->index + 1 }}" data-bs-parent="#accordionExample">
+                    aria-labelledby="heading{{ $loop->index + 1 }}" data-bs-parent="#accordionItem">
                     <div class="accordion-body" style="background-color: #285185; padding: 1%">
 
                         <nav>

@@ -1,7 +1,10 @@
 @extends('layout.master')
 @section('title', 'Detail Course')
 @section('content')
-
+    <?php  $vid = (object) [
+    'video_id' => '',
+  ];; 
+    ?>
     <h3>{{ $course->course_name }} {{ $course->course_class == '' ? '' : ' - ' . $course->course_class }} </h3>
     <p>{!! $course->course_description !!}</p>
     <div class="d-flex align-items-start">
@@ -22,7 +25,8 @@
                     aria-labelledby="v-pills-{{ $loop->index + 1 }}-tab">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist" style="border-color: #FFC107">
-                            @foreach ($session->videos as $video)
+                        
+                            @foreach ($session->videos as $vid)
                                 <button class="nav-link {{ $loop->index + 1 == 1 ? 'active' : '' }}"
                                     id="nav-{{ $session->session_name }}{{ $loop->index + 1 }}-tab"
                                     data-bs-toggle="tab"
@@ -59,17 +63,17 @@
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
-                        @foreach ($session->videos as $video)
+                        @foreach ($session->videos as $vid)
                             <div class="tab-pane fade {{ $loop->index + 1 == 1 ? 'active show' : '' }}"
                                 id="nav-{{ $session->session_name }}{{ $loop->index + 1 }}" role="tabpanel"
                                 aria-labelledby="nav-{{ $session->session_name }}{{ $loop->index + 1 }}-tab">
                                 <div style="margin-top: 1%; color: white">
-                                    <video src="{{ $video->video_file }}" width="65%" controls></video>
+                                    <video src="{{ $vid->video_file }}" width="65%" controls></video>
                                     <p class="text-uppercase">Topic : </p>
-                                    <p class="fs-6 fw-normal"> {{ $video->video_title }}</p>
+                                    <p class="fs-6 fw-normal"> {{ $vid->video_title }}</p>
                                     <p class="text-uppercase">Software used : </p>
                                     <div style="display: flex; justify-content: space-between">
-                                        <p class="fs-6 fw-normal"> {{ $video->video_software_description }}</p>
+                                        <p class="fs-6 fw-normal"> {{ $vid->video_software_description }}</p>
 
                                         <button class="btn btn-outline-light btn-sm" id="playlist-btn" onclick="addOrRemovePlaylist(this)">Add to Playlist</button>
                                         
@@ -86,7 +90,9 @@
 
 <script>
     window.onload = function() {
-        var video_id = '{{$video->video_id}}';
+        if(true)
+        {
+            var video_id = '{{$vid->video_id}}';
         
         $.ajax({
             url: "{{ url('get-video-status') }}",
@@ -106,10 +112,12 @@
                 }
 
             })
+        }  
+        
     };
     function addOrRemovePlaylist(event){
-        var video_id = '{{$video->video_id}}'
-        console.log(video_id)
+
+        var video_id = '{{$vid->video_id}}'     
         document.getElementById("playlist-btn").disabled=true;
         if(event.innerHTML.split(" ")[0] == "Add")
         {
