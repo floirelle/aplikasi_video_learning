@@ -46,8 +46,8 @@ Route::group(["middleware" => "rolemiddleware:Assistant"], function () {
     Route::post("/logout", 'UserController@logout');
     Route::post("/getsessions", "CourseController@getCourseSession");
 
-    Route::post('/add-video', 'VideoController@showAddVideo');
-    Route::post('/insert-video', 'VideoController@insertVideo');
+    // Route::post('/add-video', 'VideoController@showAddVideo');
+    // Route::post('/insert-video', 'VideoController@insertVideo');
     Route::get('/edit-video/{video_id}', 'VideoController@showDetailVideo');
     Route::post('/update-video', 'VideoController@updateVideo');
     Route::get('/delete-video/{video_id}', 'VideoController@deleteVideo');

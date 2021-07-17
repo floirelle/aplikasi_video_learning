@@ -732,7 +732,7 @@ class DatabaseSeeder extends Seeder
         ]);
         DB::table('playlists')->insert([
             "nim" => "2201759804",
-            "video_id" => 2,
+            "video_id" => 71,
         ]);
         DB::table('playlists')->insert([
             "nim" => "2201769585",

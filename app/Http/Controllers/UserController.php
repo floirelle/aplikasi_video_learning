@@ -41,7 +41,7 @@ class UserController extends Controller
     {
         $adminList = [
             // "at20-1",
-            "dy20-1"
+            // "dy20-1"
         ];
         $base_url = config('global.base_url');
         $url =  $base_url . "Account/LogOn";
